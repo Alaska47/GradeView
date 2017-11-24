@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="192dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:orientation="vertical"
+    android:gravity="center|bottom">
+
+    <!--
+    <com.akotnana.pollr.utils.RoundRectCornerImageView
+        android:id="@+id/materialup.profile_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logo1"
+        app:layout_scrollFlags="scroll"
+        />
+    -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/materialup.profile_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/male"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FFF"
+        app:layout_scrollFlags="scroll"
+        />
+
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+
+</LinearLayout>

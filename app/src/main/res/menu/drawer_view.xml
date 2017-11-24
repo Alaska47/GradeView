@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/grade_book_fragment"
+            android:icon="@drawable/ic_assignment_white_24dp"
+            android:checked="true"
+            android:title="Grade Book" />
+        <item
+            android:id="@+id/report_card_fragment"
+            android:icon="@drawable/ic_school_white_24dp"
+            android:title="Report Card" />
+        <item
+            android:id="@+id/schedule_fragment"
+            android:icon="@drawable/ic_schedule_white_24dp"
+            android:title="Schedule" />
+        <item
+            android:id="@+id/student_info_fragment"
+            android:icon="@drawable/ic_info_white_24dp"
+            android:title="Student Information" />
+        <item
+            android:id="@+id/settings_fragment"
+            android:icon="@drawable/ic_settings_white_24dp"
+            android:title="Settings" />
+        <item
+            android:id="@+id/sign_out"
+            android:icon="@drawable/ic_power_settings_new_white_24dp"
+            android:title="Sign Out" />
+    </group>
+</menu>

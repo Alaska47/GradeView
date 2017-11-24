@@ -7,6 +7,10 @@
     <color name="light_gray">#C6C6C6</color>
     <color name="dark_gray">#717171</color>
 
+    <color name="mainBackground">#E0E0E0</color>
+    <color name="wholeBackground">#FAFAFA</color>
+
+
     <color name="red_50">#fde0dc</color>
     <color name="red_100">#f9bdbb</color>
     <color name="red_200">#f69988</color>

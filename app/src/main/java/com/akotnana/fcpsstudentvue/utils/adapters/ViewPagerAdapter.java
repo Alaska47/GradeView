@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.utils;
+package com.akotnana.fcpsstudentvue.utils.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

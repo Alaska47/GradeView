@@ -19,12 +19,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.akotnana.fcpsstudentvue.fragments.gradebook.GradeBookFragment;
+import com.akotnana.fcpsstudentvue.fragments.GradeBookFragment;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
 import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
 import com.akotnana.fcpsstudentvue.utils.gson.User;
@@ -231,6 +232,12 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 

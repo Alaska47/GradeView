@@ -1,13 +1,18 @@
 package com.akotnana.fcpsstudentvue.utils.adapters;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akotnana.fcpsstudentvue.R;
+import com.akotnana.fcpsstudentvue.utils.ColorManager;
 import com.akotnana.fcpsstudentvue.utils.cards.AssignmentCard;
 
 import org.w3c.dom.Text;
@@ -64,7 +69,17 @@ public class RVAdapterAssignment extends RecyclerView.Adapter<RVAdapterAssignmen
     @Override
     public void onBindViewHolder(AssignmentViewHolder gradeViewHolder, int i) {
         gradeViewHolder.assignmentName.setText(assignmentCards.get(i).assignmentName);
-        gradeViewHolder.gradeLetter.setText((assignmentCards.get(i).grade.length() < 2) ? " " + assignmentCards.get(i).grade + " " : assignmentCards.get(i).grade);
+        if(assignmentCards.get(i).grade.length() < 3) {
+            gradeViewHolder.gradeLetter.setText(assignmentCards.get(i).grade);
+            gradeViewHolder.gradeLetter.setTextSize(32f);
+        } else {
+            gradeViewHolder.gradeLetter.setText(assignmentCards.get(i).grade);
+            gradeViewHolder.gradeLetter.setTextSize(26f);
+        }
+        //gradeViewHolder.gradeLetter.setBackgroundColor(ColorManager.getColor(assignmentCards.get(i).grade));
+        GradientDrawable sd = (GradientDrawable) gradeViewHolder.gradeLetter.getBackground().mutate();
+        sd.setColor(ColorManager.getColor(assignmentCards.get(i).grade));
+        sd.invalidateSelf();
         gradeViewHolder.score.setText("Score: " + assignmentCards.get(i).score);
         gradeViewHolder.points.setText("Points: " + assignmentCards.get(i).points);
     }

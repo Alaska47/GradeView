@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#4F91CB</color>
 
+    <color name="profileBackground">#3B4CA7</color>
+
+    <color name="profileText">#CACBB1 </color>
+
     <color name="light_gray">#C6C6C6</color>
     <color name="dark_gray">#717171</color>
 

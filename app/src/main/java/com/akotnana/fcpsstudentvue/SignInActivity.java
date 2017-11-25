@@ -116,7 +116,9 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        new DataStorage(getApplicationContext()).storeData("selectedQuarter", "-1", false);
+        new DataStorage(getApplicationContext()).storeData("selectedQuarter", "", false);
+        new DataStorage(getApplicationContext()).storeData("currentQuarter", "", false);
+        new DataStorage(getApplicationContext()).storeData("GradeBook", "", false);
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null && new DataStorage(getApplicationContext()).getData("stayLoggedIn").equals("true")) {

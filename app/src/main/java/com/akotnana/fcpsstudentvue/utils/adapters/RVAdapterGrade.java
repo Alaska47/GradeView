@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.akotnana.fcpsstudentvue.AssignmentViewActivity;
 import com.akotnana.fcpsstudentvue.R;
+import com.akotnana.fcpsstudentvue.utils.ColorManager;
 import com.akotnana.fcpsstudentvue.utils.DataStorage;
 import com.akotnana.fcpsstudentvue.utils.cards.GradeCourseCard;
 import com.google.gson.Gson;
@@ -85,6 +86,9 @@ public class RVAdapterGrade extends RecyclerView.Adapter<RVAdapterGrade.GradeVie
         gradeViewHolder.quarterName.setText(gradeCourseCards.get(i).quarterName);
         gradeViewHolder.semesterName.setText(gradeCourseCards.get(i).semesterName);
         gradeViewHolder.quarterGrade.setText(gradeCourseCards.get(i).quarterGrade);
+
+        gradeViewHolder.quarterGrade.setTextColor(ColorManager.getColor(scoreToLetterGrade(Double.parseDouble(gradeCourseCards.get(i).quarterGrade))));
+
         gradeViewHolder.semesterGrade.setText(gradeCourseCards.get(i).semesterGrade);
         gradeViewHolder.finalExamGrade.setText(gradeCourseCards.get(i).finalExamGrade);
         if(new DataStorage(context).getData("currentQuarter").equals(gradeCourseCards.get(i).quarterName)) {
@@ -96,10 +100,29 @@ public class RVAdapterGrade extends RecyclerView.Adapter<RVAdapterGrade.GradeVie
                     intent.putExtra("currentQuarter", gradeCourseCards.get(i).quarterName);
                     Gson gson = new Gson();
                     intent.putExtra("assignments", gson.toJson(gradeCourseCards.get(i).course));
+                    intent.putExtra("period", gradeCourseCards.get(i).course.getPeriodNumber());
                     context.startActivity(intent);
                 }
             });
         }
+    }
+
+    public String scoreToLetterGrade(double score) {
+        String result;
+        if (score >= 92.5d) { result = "A"; }
+        else if (score >= 89.5d) { result = "A-"; }
+        else if (score >= 86.5d) { result = "B+"; }
+        else if (score >= 83.5d) { result = "B"; }
+        else if (score >= 79.5d) { result = "B-"; }
+        else if (score >= 76.5d) { result = "C+"; }
+        else if (score >= 73.5d) { result = "C"; }
+        else if (score >= 69.5d) { result = "C-"; }
+        else if (score >= 66.5d) { result = "D+"; }
+        else if (score >= 63.5d) { result = "D+"; }
+        else { result = "F"; }
+        if(score == 0.0d)
+            result = "N/A";
+        return result;
     }
 
     @Override

@@ -115,7 +115,7 @@ public class GradeBookQFragment extends Fragment {
     }
 
     private void initializeAdapter() {
-        adapter = new RVAdapterGrade(gradesCards);
+        adapter = new RVAdapterGrade(gradesCards, getContext());
         rv.setAdapter(adapter);
     }
 

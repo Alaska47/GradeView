@@ -5,4 +5,15 @@ package com.akotnana.fcpsstudentvue.utils.cards;
  */
 
 public class AssignmentCard {
+    public String assignmentName;
+    public String score;
+    public String points;
+    public String grade;
+
+    public AssignmentCard(String assignmentName, String score, String points, String grade) {
+        this.assignmentName = assignmentName;
+        this.score = score;
+        this.points = points;
+        this.grade = grade;
+    }
 }

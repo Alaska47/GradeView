@@ -1,5 +1,7 @@
 package com.akotnana.fcpsstudentvue.utils.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.akotnana.fcpsstudentvue.AssignmentViewActivity;
 import com.akotnana.fcpsstudentvue.R;
+import com.akotnana.fcpsstudentvue.utils.DataStorage;
 import com.akotnana.fcpsstudentvue.utils.cards.GradeCourseCard;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -45,9 +50,11 @@ public class RVAdapterGrade extends RecyclerView.Adapter<RVAdapterGrade.GradeVie
     }
 
     List<GradeCourseCard> gradeCourseCards;
+    Context context;
 
-    public RVAdapterGrade(List<GradeCourseCard> grades){
+    public RVAdapterGrade(List<GradeCourseCard> grades, Context con){
         this.gradeCourseCards = grades;
+        this.context = con;
     }
 
     @Override
@@ -70,7 +77,7 @@ public class RVAdapterGrade extends RecyclerView.Adapter<RVAdapterGrade.GradeVie
     }
 
     @Override
-    public void onBindViewHolder(GradeViewHolder gradeViewHolder, int i) {
+    public void onBindViewHolder(GradeViewHolder gradeViewHolder, final int i) {
         gradeViewHolder.periodName.setText(gradeCourseCards.get(i).periodNumber);
         gradeViewHolder.courseName.setText(gradeCourseCards.get(i).courseName);
         gradeViewHolder.teacherName.setText("Teacher: " + gradeCourseCards.get(i).teacherName);
@@ -80,6 +87,19 @@ public class RVAdapterGrade extends RecyclerView.Adapter<RVAdapterGrade.GradeVie
         gradeViewHolder.quarterGrade.setText(gradeCourseCards.get(i).quarterGrade);
         gradeViewHolder.semesterGrade.setText(gradeCourseCards.get(i).semesterGrade);
         gradeViewHolder.finalExamGrade.setText(gradeCourseCards.get(i).finalExamGrade);
+        if(new DataStorage(context).getData("currentQuarter").equals(gradeCourseCards.get(i).quarterName)) {
+            gradeViewHolder.cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(context, AssignmentViewActivity.class);
+                    intent.putExtra("currentQuarter", gradeCourseCards.get(i).quarterName);
+                    Gson gson = new Gson();
+                    intent.putExtra("assignments", gson.toJson(gradeCourseCards.get(i).course));
+                    context.startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override

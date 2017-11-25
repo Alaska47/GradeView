@@ -1,7 +1,9 @@
 package com.akotnana.fcpsstudentvue.fragments.gradebook;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,13 +48,14 @@ public class GradeBookQFragment extends Fragment {
 
     public int visibleFragment = -1;
 
+    public Snackbar errorSnack;
+
     public GradeBookQFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             //Log.d(TAG, "bundle not NULL");
@@ -86,17 +89,6 @@ public class GradeBookQFragment extends Fragment {
         }
 
         //Log.d(TAG, "OnCreate called");
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.refresh: {
-                Log.i("GradeBookQFragment", "Save from fragment " + quarterIndex);
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -142,8 +134,18 @@ public class GradeBookQFragment extends Fragment {
             }
             Quarter quarter = gson.fromJson(new DataStorage(getContext()).getData("GradeBook"), Quarter.class);
             Course[] courses = quarter.getCourses();
+            if(courses.length < 1) {
+                errorSnack = Snackbar.make(((Activity) getContext()).findViewById(android.R.id.content), "Grades for this quarter are currently unavailable.", Snackbar.LENGTH_LONG);
+                errorSnack.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        errorSnack.dismiss();
+                    }
+                });
+                errorSnack.show();
+            }
             for (Course course : courses) {
-                gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGradePercentage(), "N/A", "N/A"));
+                gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGradePercentage(), "N/A", "N/A", course));
             }
             hasAlreadyLoaded = true;
             initializeAdapter();
@@ -160,7 +162,6 @@ public class GradeBookQFragment extends Fragment {
         if(isVisibleToUser){
             if(quarterName != null) {
                 this.visibleFragment = Integer.parseInt(String.valueOf(quarterName.charAt(1))) - 1;
-                Log.d(TAG, quarterName);
             }
             Log.d(TAG, "The index of the visible fragment is: " + this.visibleFragment + " called from fragment " + quarterIndex);
             if(getContext() != null) {
@@ -191,7 +192,32 @@ public class GradeBookQFragment extends Fragment {
                         Quarter quarter = finalGson.fromJson(result, Quarter.class);
                         Course[] courses = quarter.getCourses();
                         for (Course course : courses) {
-                            gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGradePercentage(), "N/A", "N/A"));
+                            gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGradePercentage(), "N/A", "N/A", course));
+                        }
+                        if(courses.length < 1) {
+                            Log.i(TAG, "Snackbar called!");
+                            errorSnack = Snackbar.make(((Activity) getContext()).findViewById(android.R.id.content), "Grades for this quarter are currently unavailable.", Snackbar.LENGTH_LONG);
+                            errorSnack.setAction("Dismiss", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    errorSnack.dismiss();
+                                    errorSnack = null;
+                                }
+                            });
+                            errorSnack.addCallback(new Snackbar.Callback() {
+
+                                @Override
+                                public void onDismissed(Snackbar snackbar, int event) {
+                                    if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                                        errorSnack = null;
+                                    }
+                                }
+
+                                @Override
+                                public void onShown(Snackbar snackbar) {
+                                }
+                            });
+                            errorSnack.show();
                         }
                         progressDialog.dismiss();
                         initializeAdapter();
@@ -210,7 +236,20 @@ public class GradeBookQFragment extends Fragment {
             if(adapter != null)
                 initializeAdapter();
             hasAlreadyLoaded = false;
+            Log.d(TAG, "Can no longer see fragment " + quarterIndex);
+            if (errorSnack != null) {
+                Log.i(TAG, "Snackbar dismissed!");
+                errorSnack.dismiss();
+            }
         }
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (errorSnack != null) {
+            Log.i(TAG, "Snackbar dismissed!");
+            errorSnack.dismiss();
+        }
     }
 }

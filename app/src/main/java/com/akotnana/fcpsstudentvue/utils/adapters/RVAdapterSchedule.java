@@ -21,18 +21,18 @@ import java.util.List;
 public class RVAdapterSchedule extends RecyclerView.Adapter<RVAdapterSchedule.ScheduleViewHolder>{
     public static class ScheduleViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
-        TextView scheduleName;
-        TextView points;
-        TextView score;
-        TextView gradeLetter;
+        TextView periodNumber;
+        TextView courseName;
+        TextView teacherName;
+        TextView roomNumber;
 
         ScheduleViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
-            scheduleName = (TextView)itemView.findViewById(R.id.schedule_name);
-            points = (TextView)itemView.findViewById(R.id.points);
-            score = (TextView)itemView.findViewById(R.id.score);
-            gradeLetter = (TextView)itemView.findViewById(R.id.schedule_grade);
+            periodNumber = (TextView)itemView.findViewById(R.id.period_number);
+            courseName = (TextView)itemView.findViewById(R.id.course_name);
+            teacherName = (TextView)itemView.findViewById(R.id.teacher_name);
+            roomNumber = (TextView)itemView.findViewById(R.id.room_number);
         }
     }
 
@@ -63,20 +63,10 @@ public class RVAdapterSchedule extends RecyclerView.Adapter<RVAdapterSchedule.Sc
 
     @Override
     public void onBindViewHolder(ScheduleViewHolder gradeViewHolder, int i) {
-        gradeViewHolder.scheduleName.setText(scheduleCards.get(i).scheduleName);
-        if(scheduleCards.get(i).grade.length() < 3) {
-            gradeViewHolder.gradeLetter.setText(scheduleCards.get(i).grade);
-            gradeViewHolder.gradeLetter.setTextSize(32f);
-        } else {
-            gradeViewHolder.gradeLetter.setText(scheduleCards.get(i).grade);
-            gradeViewHolder.gradeLetter.setTextSize(26f);
-        }
-        //gradeViewHolder.gradeLetter.setBackgroundColor(ColorManager.getColor(scheduleCards.get(i).grade));
-        GradientDrawable sd = (GradientDrawable) gradeViewHolder.gradeLetter.getBackground().mutate();
-        sd.setColor(ColorManager.getColor(scheduleCards.get(i).grade));
-        sd.invalidateSelf();
-        gradeViewHolder.score.setText("Score: " + scheduleCards.get(i).score);
-        gradeViewHolder.points.setText("Points: " + scheduleCards.get(i).points);
+        gradeViewHolder.periodNumber.setText(scheduleCards.get(i).periodNumber);
+        gradeViewHolder.courseName.setText(scheduleCards.get(i).courseName);
+        gradeViewHolder.teacherName.setText("Teacher: " + scheduleCards.get(i).teacherName);
+        gradeViewHolder.roomNumber.setText("Room: " + scheduleCards.get(i).roomNumber);
     }
 
     @Override

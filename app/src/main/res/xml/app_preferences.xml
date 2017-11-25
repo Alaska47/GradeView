@@ -1,4 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-</PreferenceScreen>
+    <android.support.v7.preference.PreferenceCategory
+        android:title="General">
+
+        <Preference
+            android:selectable="false"
+            android:enabled="true"
+            android:key="version_key"
+            android:title="Version: 1.0.0"/>
+
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="Notifications">
+
+        <android.support.v7.preference.CheckBoxPreference
+            android:key="notifications"
+            android:title="Assignment Notifications"
+            android:summary="Display notifications for when new assignments are added or existing grades are changed."
+            android:defaultValue="false"/>
+
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>
+

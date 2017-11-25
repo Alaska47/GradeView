@@ -1,43 +1,36 @@
 package com.akotnana.fcpsstudentvue.fragments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.preference.PreferenceScreen;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.akotnana.fcpsstudentvue.MainActivity;
 import com.akotnana.fcpsstudentvue.R;
-import com.akotnana.fcpsstudentvue.utils.BackendUtils;
-import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
-import com.akotnana.fcpsstudentvue.utils.gson.User;
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.util.HashMap;
-
-import de.hdodenhof.circleimageview.CircleImageView;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 /**
  * Created by anees on 11/23/2017.
  */
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends PreferenceFragmentCompat  {
 
     private static final String TAG = "SettingsFragment";
     private OnFragmentInteractionListener mListener;
 
     public SettingsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle bundle, String s) {
+        // Load the Preferences from the XML file
+        addPreferencesFromResource(R.xml.app_preferences);
     }
 
     @Override
@@ -55,14 +48,6 @@ public class SettingsFragment extends Fragment {
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_setting, container, false);
-
-        return v;
     }
 
     @Override

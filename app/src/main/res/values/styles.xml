@@ -9,6 +9,21 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="preferenceTheme">@style/PreferenceStyle</item>
+    </style>
+
+    <style name="PreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="preferenceCategoryStyle">@style/CustomPreferenceCategory</item>
+    </style>
+
+    <style name="CustomPreferenceCategory" parent="@style/Preference.Category">
+        <item name="android:layout">@layout/custom_preference_category</item>
+    </style>
+
+    <style name="CustomPreferenceCategoryText" parent="@android:style/Widget.TextView">
+        <!-- Style your PreferenceCategory here. -->
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

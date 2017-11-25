@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,10 +30,16 @@ public class DataStorage {
         context = con;
     }
 
-    public void storeData(String key, String value) {
+    public void storeData(String key, String value, boolean async) {
+
         SharedPreferences.Editor editor = context.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
         editor.putString(key,value);
-        editor.apply();
+        //Log.d("DATASTORAGE", key + ":" + value);
+
+        if(async)
+            editor.apply();
+        else
+            editor.commit();
     }
 
     public String getAuthToken() {

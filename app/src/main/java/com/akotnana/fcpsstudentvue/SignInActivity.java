@@ -81,7 +81,7 @@ public class SignInActivity extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInAnonymously:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        new DataStorage(getApplicationContext()).storeData("stayLoggedIn", String.valueOf(staySignedIn.isChecked()));
+                                        new DataStorage(getApplicationContext()).storeData("stayLoggedIn", String.valueOf(staySignedIn.isChecked()), true);
                                         Log.d(TAG, String.valueOf(staySignedIn.isChecked()));
                                         BackendUtils.doPostRequest("/grades", new HashMap<String, String>() {{
                                         }}, new VolleyCallback() {
@@ -116,6 +116,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        new DataStorage(getApplicationContext()).storeData("selectedQuarter", "-1", false);
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null && new DataStorage(getApplicationContext()).getData("stayLoggedIn").equals("true")) {

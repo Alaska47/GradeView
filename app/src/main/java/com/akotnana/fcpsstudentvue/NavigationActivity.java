@@ -26,8 +26,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akotnana.fcpsstudentvue.fragments.GradeBookFragment;
+import com.akotnana.fcpsstudentvue.fragments.ReportCardFragment;
+import com.akotnana.fcpsstudentvue.fragments.ScheduleFragment;
+import com.akotnana.fcpsstudentvue.fragments.SettingsFragment;
+import com.akotnana.fcpsstudentvue.fragments.StudentInformationFragment;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
 import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
+import com.akotnana.fcpsstudentvue.utils.cards.ScheduleCard;
 import com.akotnana.fcpsstudentvue.utils.gson.User;
 import com.android.volley.VolleyError;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +44,7 @@ import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class NavigationActivity extends AppCompatActivity implements GradeBookFragment.OnFragmentInteractionListener {
+public class NavigationActivity extends AppCompatActivity implements GradeBookFragment.OnFragmentInteractionListener, ReportCardFragment.OnFragmentInteractionListener, ScheduleFragment.OnFragmentInteractionListener, StudentInformationFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
 
     public static String TAG = "NavigationActivity";
 
@@ -165,6 +170,26 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
             case R.id.grade_book_fragment:
                 mDrawer.closeDrawers();
                 fragmentClass = GradeBookFragment.class;
+                Log.d("Navigation", "regular");
+                break;
+            case R.id.report_card_fragment:
+                mDrawer.closeDrawers();
+                fragmentClass = ReportCardFragment.class;
+                Log.d("Navigation", "regular");
+                break;
+            case R.id.schedule_fragment:
+                mDrawer.closeDrawers();
+                fragmentClass = ScheduleFragment.class;
+                Log.d("Navigation", "regular");
+                break;
+            case R.id.student_info_fragment:
+                mDrawer.closeDrawers();
+                fragmentClass = StudentInformationFragment.class;
+                Log.d("Navigation", "regular");
+                break;
+            case R.id.settings_fragment:
+                mDrawer.closeDrawers();
+                fragmentClass = SettingsFragment.class;
                 Log.d("Navigation", "regular");
                 break;
             case R.id.sign_out:

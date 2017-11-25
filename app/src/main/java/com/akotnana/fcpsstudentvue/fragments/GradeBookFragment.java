@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import com.akotnana.fcpsstudentvue.R;
 import com.akotnana.fcpsstudentvue.fragments.gradebook.GradeBookQFragment;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
+import com.akotnana.fcpsstudentvue.utils.DataStorage;
 import com.akotnana.fcpsstudentvue.utils.adapters.ViewPagerAdapter;
 import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
 import com.android.volley.VolleyError;
@@ -45,22 +47,10 @@ public class GradeBookFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             retrievedGrades = bundle.getString("grades", "");
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.refresh : {
-                Log.i("GradeBookFragment", "Save from fragment");
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -70,8 +60,8 @@ public class GradeBookFragment extends Fragment {
 
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         viewPager = (ViewPager) v.findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(1);
-        adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        viewPager.setOffscreenPageLimit(2);
+        adapter = new ViewPagerAdapter(getContext(), getActivity().getSupportFragmentManager());
 
         if(retrievedGrades.equals("")) {
             Log.d(TAG, "retrievedGrades empty");
@@ -85,57 +75,54 @@ public class GradeBookFragment extends Fragment {
             }}, new VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    retrievedGrades = result;
+                    new DataStorage(getContext()).storeData("GradeBook", result, false);
                     try {
+                        int goToPage = -1;
                         String quarter = new JSONObject(result).getString("name");
-                        Fragment quarterOne = new GradeBookQFragment();
-                        Fragment quarterTwo = new GradeBookQFragment();
-                        Fragment quarterThree = new GradeBookQFragment();
-                        Fragment quarterFour = new GradeBookQFragment();
-
                         if(quarter.contains("First")) {
-                            Log.d(TAG, "Q1");
-                            Bundle bundle0 = new Bundle();
-                            bundle0.putInt("index", 0);
-                            bundle0.putString("grades", result);
-                            quarterOne.setArguments(bundle0);
+                            new DataStorage(getContext()).storeData("selectedQuarter", "0", false);
+                            Log.d(TAG, "stored 00");
+                            goToPage = 0;
                         } else if(quarter.contains("Second")) {
-                            Log.d(TAG, "Q2");
-                            Bundle bundle1 = new Bundle();
-                            bundle1.putInt("index", 1);
-                            bundle1.putString("grades", result);
-                            quarterTwo.setArguments(bundle1);
+                            new DataStorage(getContext()).storeData("selectedQuarter", "1", false);
+                            Log.d(TAG, "stored 01");
+                            goToPage = 1;
                         } else if(quarter.contains("Third")) {
-                            Log.d(TAG, "Q3");
-                            Bundle bundle2 = new Bundle();
-                            bundle2.putInt("index", 2);
-                            bundle2.putString("grades", result);
-                            quarterThree.setArguments(bundle2);
+                            new DataStorage(getContext()).storeData("selectedQuarter", "2", false);
+                            Log.d(TAG, "stored 02");
+                            goToPage = 2;
                         } else {
-                            Log.d(TAG, "Q4");
-                            Bundle bundle3 = new Bundle();
-                            bundle3.putInt("index", 3);
-                            bundle3.putString("grades", result);
-                            quarterFour.setArguments(bundle3);
+                            new DataStorage(getContext()).storeData("selectedQuarter", "3", false);
+                            Log.d(TAG, "stored 03");
+                            goToPage = 3;
                         }
-
+                        Fragment quarterOne = new GradeBookQFragment();
+                        Bundle bundle0 = new Bundle();
+                        bundle0.putInt("index", 0);
+                        quarterOne.setArguments(bundle0);
+                        Fragment quarterTwo = new GradeBookQFragment();
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putInt("index", 1);
+                        quarterTwo.setArguments(bundle1);
+                        Fragment quarterThree = new GradeBookQFragment();
+                        Bundle bundle2 = new Bundle();
+                        bundle2.putInt("index", 2);
+                        quarterThree.setArguments(bundle2);
+                        Fragment quarterFour = new GradeBookQFragment();
+                        Bundle bundle3 = new Bundle();
+                        bundle3.putInt("index", 3);
+                        quarterFour.setArguments(bundle3);
                         adapter.addFragment(quarterOne, "Q1");
                         adapter.addFragment(quarterTwo, "Q2");
                         adapter.addFragment(quarterThree, "Q3");
                         adapter.addFragment(quarterFour, "Q4");
                         viewPager.setAdapter(adapter);
 
+                        viewPager.setCurrentItem(goToPage);
+
                         tabLayout.setupWithViewPager(viewPager);
 
-                        if(quarter.contains("First")) {
-                            viewPager.setCurrentItem(0);
-                        } else if(quarter.contains("Second")) {
-                            viewPager.setCurrentItem(1);
-                        } else if(quarter.contains("Third")) {
-                            viewPager.setCurrentItem(2);
-                        } else {
-                            viewPager.setCurrentItem(3);
-                        }
+
 
                         progressDialog.dismiss();
                     } catch (JSONException e) {
@@ -149,57 +136,54 @@ public class GradeBookFragment extends Fragment {
                 }
             }, getContext());
         } else {
+            new DataStorage(getContext()).storeData("GradeBook", retrievedGrades, false);
             Log.d(TAG, "retrievedGrades not empty");
             try {
                 String quarter = new JSONObject(retrievedGrades).getString("name");
-                Fragment quarterOne = new GradeBookQFragment();
-                Fragment quarterTwo = new GradeBookQFragment();
-                Fragment quarterThree = new GradeBookQFragment();
-                Fragment quarterFour = new GradeBookQFragment();
-
+                int goToPage = -1;
                 if(quarter.contains("First")) {
-                    Log.d(TAG, "Q1");
-                    Bundle bundle0 = new Bundle();
-                    bundle0.putInt("index", 0);
-                    bundle0.putString("grades", retrievedGrades);
-                    quarterOne.setArguments(bundle0);
+                    new DataStorage(getContext()).storeData("selectedQuarter", "0", false);
+                    Log.d(TAG, "stored 00");
+                    goToPage = 0;
                 } else if(quarter.contains("Second")) {
-                    Log.d(TAG, "Q2");
-                    Bundle bundle1 = new Bundle();
-                    bundle1.putInt("index", 1);
-                    bundle1.putString("grades", retrievedGrades);
-                    quarterTwo.setArguments(bundle1);
+                    new DataStorage(getContext()).storeData("selectedQuarter", "1", false);
+                    Log.d(TAG, "stored 01");
+                    goToPage = 1;
                 } else if(quarter.contains("Third")) {
-                    Log.d(TAG, "Q3");
-                    Bundle bundle2 = new Bundle();
-                    bundle2.putInt("index", 2);
-                    bundle2.putString("grades", retrievedGrades);
-                    quarterThree.setArguments(bundle2);
+                    new DataStorage(getContext()).storeData("selectedQuarter", "2", false);
+                    Log.d(TAG, "stored 02");
+                    goToPage = 2;
                 } else {
-                    Log.d(TAG, "Q4");
-                    Bundle bundle3 = new Bundle();
-                    bundle3.putInt("index", 3);
-                    bundle3.putString("grades", retrievedGrades);
-                    quarterFour.setArguments(bundle3);
+                    new DataStorage(getContext()).storeData("selectedQuarter", "3", false);
+                    Log.d(TAG, "stored 03");
+                    goToPage = 3;
                 }
 
+                Fragment quarterOne = new GradeBookQFragment();
+                Bundle bundle0 = new Bundle();
+                bundle0.putInt("index", 0);
+                quarterOne.setArguments(bundle0);
+                Fragment quarterTwo = new GradeBookQFragment();
+                Bundle bundle1 = new Bundle();
+                bundle1.putInt("index", 1);
+                quarterTwo.setArguments(bundle1);
+                Fragment quarterThree = new GradeBookQFragment();
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt("index", 2);
+                quarterThree.setArguments(bundle2);
+                Fragment quarterFour = new GradeBookQFragment();
+                Bundle bundle3 = new Bundle();
+                bundle3.putInt("index", 3);
+                quarterFour.setArguments(bundle3);
                 adapter.addFragment(quarterOne, "Q1");
                 adapter.addFragment(quarterTwo, "Q2");
                 adapter.addFragment(quarterThree, "Q3");
                 adapter.addFragment(quarterFour, "Q4");
                 viewPager.setAdapter(adapter);
 
-                tabLayout.setupWithViewPager(viewPager);
+                viewPager.setCurrentItem(goToPage);
 
-                if(quarter.contains("First")) {
-                    viewPager.setCurrentItem(0);
-                } else if(quarter.contains("Second")) {
-                    viewPager.setCurrentItem(1);
-                } else if(quarter.contains("Third")) {
-                    viewPager.setCurrentItem(2);
-                } else {
-                    viewPager.setCurrentItem(3);
-                }
+                tabLayout.setupWithViewPager(viewPager);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

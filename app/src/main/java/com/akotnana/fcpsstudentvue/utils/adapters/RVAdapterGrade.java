@@ -52,7 +52,14 @@ public class RVAdapterGrade extends RecyclerView.Adapter<RVAdapterGrade.GradeVie
 
     @Override
     public int getItemCount() {
+        if(gradeCourseCards == null)
+            return 0;
         return gradeCourseCards.size();
+    }
+
+    public void clear() {
+        gradeCourseCards.clear();
+        notifyDataSetChanged();
     }
 
     @Override

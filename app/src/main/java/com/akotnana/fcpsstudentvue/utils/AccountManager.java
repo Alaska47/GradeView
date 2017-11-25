@@ -63,8 +63,8 @@ public class AccountManager {
         String key1 = "";
         if (new DataStorage(context).getData("createdKey") != "1") {
             key1 = UUID.randomUUID().toString().replace("-", "").substring(0, 32);
-            new DataStorage(context).storeData("key", key1);
-            new DataStorage(context).storeData("createdKey", "1");
+            new DataStorage(context).storeData("key", key1, true);
+            new DataStorage(context).storeData("createdKey", "1", true);
         } else {
             key1 = new DataStorage(context).getData("key");
         }
@@ -96,8 +96,8 @@ public class AccountManager {
             e.printStackTrace();
         }
         String encryptedPassword = Base64.encodeToString(encVal, Base64.DEFAULT);
-        new DataStorage(context).storeData("password", encryptedPassword);
-        new DataStorage(context).storeData("username", username);
+        new DataStorage(context).storeData("password", encryptedPassword, true);
+        new DataStorage(context).storeData("username", username, true);
     }
 
     private Key generateKey(String key1) throws Exception {

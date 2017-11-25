@@ -1,5 +1,6 @@
 package com.akotnana.fcpsstudentvue.fragments.gradebook;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,15 +12,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.akotnana.fcpsstudentvue.R;
+import com.akotnana.fcpsstudentvue.utils.BackendUtils;
+import com.akotnana.fcpsstudentvue.utils.DataStorage;
+import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
 import com.akotnana.fcpsstudentvue.utils.adapters.RVAdapterGrade;
 import com.akotnana.fcpsstudentvue.utils.cards.GradeCourseCard;
 import com.akotnana.fcpsstudentvue.utils.gson.Course;
 import com.akotnana.fcpsstudentvue.utils.gson.Quarter;
 import com.akotnana.fcpsstudentvue.utils.gson.User;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GradeBookQFragment extends Fragment {
@@ -31,10 +40,14 @@ public class GradeBookQFragment extends Fragment {
     public static String grades;
     private List<GradeCourseCard> gradesCards;
     private RecyclerView rv;
+    private RVAdapterGrade adapter;
 
-    public boolean isVisible = false;
+    public boolean hasAlreadyLoaded = false;
 
-    public GradeBookQFragment() {}
+    public int visibleFragment = -1;
+
+    public GradeBookQFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,11 +55,9 @@ public class GradeBookQFragment extends Fragment {
         setHasOptionsMenu(true);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            Log.d(TAG, "bundle not NULL");
+            //Log.d(TAG, "bundle not NULL");
             this.quarterIndex = bundle.getInt("index", 0);
-            Log.d(TAG, "" + this.quarterIndex);
-            this.grades = bundle.getString("grades", "N/A");
-            if(quarterIndex < 2) {
+            if (quarterIndex < 2) {
                 this.semesterName = "S1";
             } else {
                 this.semesterName = "S2";
@@ -74,14 +85,14 @@ public class GradeBookQFragment extends Fragment {
             */
         }
 
-        Log.d(TAG, "OnCreate called");
+        //Log.d(TAG, "OnCreate called");
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.refresh : {
-                Log.i("GradeBookQFragment", "Save from fragment");
+            case R.id.refresh: {
+                Log.i("GradeBookQFragment", "Save from fragment " + quarterIndex);
                 return true;
             }
         }
@@ -98,32 +109,108 @@ public class GradeBookQFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
-        Log.d(TAG, "OnCreateView called");
-        initializeData();
         initializeAdapter();
+        initializeData();
+
         return v;
 
     }
 
-    private void initializeAdapter(){
-        RVAdapterGrade adapter = new RVAdapterGrade(gradesCards);
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializeData();
+    }
+
+    private void initializeAdapter() {
+        adapter = new RVAdapterGrade(gradesCards);
         rv.setAdapter(adapter);
     }
 
-    private void initializeData(){
-        gradesCards = new ArrayList<>();
-        Gson gson = null;
-        try {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gson = gsonBuilder.create();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void initializeData() {
+        Log.d(TAG, "SelectedQuarter from " + quarterName + " : " + new DataStorage(getContext()).getData("selectedQuarter"));
+        if (Integer.parseInt(new DataStorage(getContext()).getData("selectedQuarter")) == quarterIndex) {
+            new DataStorage(getContext()).storeData("selectedQuarter", "-1", false);
+            Log.d(TAG, quarterName + " is loading what is already loaded now!");
+            gradesCards = new ArrayList<>();
+            Gson gson = null;
+            try {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gson = gsonBuilder.create();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Quarter quarter = gson.fromJson(new DataStorage(getContext()).getData("GradeBook"), Quarter.class);
+            Course[] courses = quarter.getCourses();
+            for (Course course : courses) {
+                gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGradePercentage(), "N/A", "N/A"));
+            }
+            hasAlreadyLoaded = true;
+            initializeAdapter();
+        } else {
+            Log.d(TAG, quarterName + " has nothing to load!");
+            gradesCards = new ArrayList<>();
         }
-        Log.d(TAG, "" + this.grades);
-        Quarter quarter = gson.fromJson(this.grades, Quarter.class);
-        Course[] courses = quarter.getCourses();
-        for(Course course : courses) {
-            gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGradePercentage(), "N/A", "N/A"));
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            if(quarterName != null) {
+                this.visibleFragment = Integer.parseInt(String.valueOf(quarterName.charAt(1))) - 1;
+                Log.d(TAG, quarterName);
+            }
+            Log.d(TAG, "The index of the visible fragment is: " + this.visibleFragment + " called from fragment " + quarterIndex);
+            if(getContext() != null) {
+                //Log.d(TAG, Integer.parseInt(new DataStorage(getContext()).getData("selectedQuarter")) + "");
+            }
+            if(this.visibleFragment == quarterIndex && Integer.parseInt(new DataStorage(getContext()).getData("selectedQuarter")) == -1 && !hasAlreadyLoaded) {
+                Log.d(TAG, quarterName + " is loading new now!");
+                gradesCards = new ArrayList<>();
+                Gson gson = null;
+                try {
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    gson = gsonBuilder.create();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                final ProgressDialog progressDialog = new ProgressDialog(getActivity(),
+                        R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Loading...");
+                progressDialog.show();
+                final Gson finalGson = gson;
+                BackendUtils.doPostRequest("/grades/quarter/" + quarterIndex, new HashMap<String, String>() {{
+                }}, new VolleyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.d(TAG, result);
+                        Quarter quarter = finalGson.fromJson(result, Quarter.class);
+                        Course[] courses = quarter.getCourses();
+                        for (Course course : courses) {
+                            gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGradePercentage(), "N/A", "N/A"));
+                        }
+                        progressDialog.dismiss();
+                        initializeAdapter();
+                    }
+
+                    @Override
+                    public void onError(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                }, getContext());
+
+            }
+
+        } else {
+            gradesCards = new ArrayList<>();
+            if(adapter != null)
+                initializeAdapter();
+            hasAlreadyLoaded = false;
         }
+
     }
 }

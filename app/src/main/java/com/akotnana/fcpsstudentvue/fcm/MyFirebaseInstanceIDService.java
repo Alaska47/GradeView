@@ -43,7 +43,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        new DataStorage(getApplicationContext()).storeData("firebaseID", token);
+        new DataStorage(getApplicationContext()).storeData("firebaseID", token, true);
     }
 
 

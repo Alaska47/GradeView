@@ -108,7 +108,7 @@
 
                     <TextView
                         android:id="@+id/semester_name"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:padding="5dp"
@@ -118,18 +118,6 @@
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_marginTop="10dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="FE"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -139,37 +127,30 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/quarter_grade"
+                        android:id="@+id/quarter_report"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:padding="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/bg_green_circle"
+                        android:gravity="center_vertical|center_horizontal"
                         android:text="N/A"
-                        android:textColor="@color/green_500"
+                        android:textColor="#fff"
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/semester_grade"
+                        android:id="@+id/semester_report"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:padding="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/bg_green_circle"
+                        android:gravity="center_vertical|center_horizontal"
                         android:text="N/A"
-                        android:textColor="@color/light_gray"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/final_exam_grade"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="N/A"
-                        android:textColor="@color/light_gray"
+                        android:textColor="#fff"
                         android:textSize="18sp" />
 
                 </LinearLayout>

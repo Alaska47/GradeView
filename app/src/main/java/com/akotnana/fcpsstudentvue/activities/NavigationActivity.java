@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue;
+package com.akotnana.fcpsstudentvue.activities;
 
 /**
  * Created by anees on 11/23/2017.
@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akotnana.fcpsstudentvue.R;
 import com.akotnana.fcpsstudentvue.fragments.GradeBookFragment;
 import com.akotnana.fcpsstudentvue.fragments.ReportCardFragment;
 import com.akotnana.fcpsstudentvue.fragments.ScheduleFragment;
@@ -32,7 +33,6 @@ import com.akotnana.fcpsstudentvue.fragments.SettingsFragment;
 import com.akotnana.fcpsstudentvue.fragments.StudentInformationFragment;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
 import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
-import com.akotnana.fcpsstudentvue.utils.cards.ScheduleCard;
 import com.akotnana.fcpsstudentvue.utils.gson.User;
 import com.android.volley.VolleyError;
 import com.google.firebase.auth.FirebaseAuth;

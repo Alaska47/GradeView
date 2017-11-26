@@ -11,21 +11,17 @@ public class ColorManager {
         if(grade.charAt(0) == 'A') {
             int baseColor = Color.GREEN;
             if(grade.length() == 1)
-                return baseColor;
-            if(grade.charAt(1) == '+') {
-                baseColor = lighten(baseColor, 0.25);
-            } else {
-                baseColor = darken(baseColor, 0.25);
-            }
-            return baseColor;
+                return darken(baseColor, 0.5);
+            else
+                return darken(baseColor, 0.4);
         } else if(grade.charAt(0) == 'B') {
             int baseColor = darken(Color.parseColor("#ffa500"), 0.25);
             if(grade.length() == 1)
                 return baseColor;
             if(grade.charAt(1) == '+') {
-                baseColor = lighten(baseColor, 0.25);
+                baseColor = darken(baseColor, 0.1);
             } else {
-                baseColor = darken(baseColor, 0.25);
+                baseColor = lighten(baseColor, 0.1);
             }
             return baseColor;
         } else if(grade.charAt(0) == 'C') {
@@ -33,9 +29,9 @@ public class ColorManager {
             if(grade.length() == 1)
                 return baseColor;
             if(grade.charAt(1) == '+') {
-                baseColor = lighten(baseColor, 0.25);
+                baseColor = darken(baseColor, 0.1);
             } else {
-                baseColor = darken(baseColor, 0.25);
+                baseColor = lighten(baseColor, 0.1);
             }
             return baseColor;
         } else if(grade.charAt(0) == 'D') {
@@ -43,13 +39,13 @@ public class ColorManager {
             if(grade.length() == 1)
                 return baseColor;
             if(grade.charAt(1) == '+') {
-                baseColor = lighten(baseColor, 0.25);
+                baseColor = darken(baseColor, 0.1);
             } else {
-                baseColor = darken(baseColor, 0.25);
+                baseColor = lighten(baseColor, 0.1);
             }
             return baseColor;
         } else if(grade.charAt(0) == 'F') {
-            return darken(Color.RED, 0.25);
+            return lighten(Color.RED, 0.25);
         } else {
             return Color.BLACK;
         }

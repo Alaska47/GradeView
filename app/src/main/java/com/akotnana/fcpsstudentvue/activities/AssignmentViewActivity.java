@@ -1,13 +1,9 @@
-package com.akotnana.fcpsstudentvue;
+package com.akotnana.fcpsstudentvue.activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.akotnana.fcpsstudentvue.R;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
 import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
 import com.akotnana.fcpsstudentvue.utils.adapters.RVAdapterAssignment;
 import com.akotnana.fcpsstudentvue.utils.cards.AssignmentCard;
-import com.akotnana.fcpsstudentvue.utils.cards.GradeCourseCard;
 import com.akotnana.fcpsstudentvue.utils.gson.Assignment;
 import com.akotnana.fcpsstudentvue.utils.gson.Course;
 import com.akotnana.fcpsstudentvue.utils.gson.Quarter;

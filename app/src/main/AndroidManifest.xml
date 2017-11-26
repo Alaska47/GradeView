@@ -35,7 +35,7 @@
             tools:node="replace" />
 
         <activity
-            android:name=".SignInActivity"
+            android:name=".activities.SignInActivity"
             android:label="FCPS StudentVUE"
             android:theme="@style/AppTheme">
             <intent-filter android:label="@string/app_name">
@@ -46,13 +46,13 @@
         </activity>
 
         <activity
-            android:name=".NavigationActivity"
+            android:name=".activities.NavigationActivity"
             android:label=""
             android:theme="@style/AppTheme">
         </activity>
 
         <activity
-            android:name=".AssignmentViewActivity"
+            android:name=".activities.AssignmentViewActivity"
             android:label=""
             android:theme="@style/AppTheme">
         </activity>

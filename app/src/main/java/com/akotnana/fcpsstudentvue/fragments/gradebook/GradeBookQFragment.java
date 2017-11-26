@@ -2,6 +2,7 @@ package com.akotnana.fcpsstudentvue.fragments.gradebook;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -12,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.akotnana.fcpsstudentvue.R;
+import com.akotnana.fcpsstudentvue.activities.SignInActivity;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
 import com.akotnana.fcpsstudentvue.utils.DataStorage;
 import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
@@ -23,6 +26,7 @@ import com.akotnana.fcpsstudentvue.utils.gson.Course;
 import com.akotnana.fcpsstudentvue.utils.gson.Quarter;
 import com.akotnana.fcpsstudentvue.utils.gson.User;
 import com.android.volley.VolleyError;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -226,6 +230,13 @@ public class GradeBookQFragment extends Fragment {
                     @Override
                     public void onError(VolleyError error) {
                         progressDialog.dismiss();
+                        if(error.networkResponse.statusCode == 401) {
+                            Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                        }
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(getContext(), SignInActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().startActivity(intent);
                     }
                 }, getContext(), getActivity());
 

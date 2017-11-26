@@ -55,6 +55,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
 
     String assignments;
     String period;
+    String fromNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,18 @@ public class AssignmentViewActivity extends AppCompatActivity {
             }
         } else {
             currentQuarter = (String) savedInstanceState.getSerializable("currentQuarter");
+        }
+
+        fromNotification = "";
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                fromNotification = null;
+            } else {
+                fromNotification = extras.getString("fromNotification");
+            }
+        } else {
+            fromNotification = (String) savedInstanceState.getSerializable("fromNotification");
         }
 
         period = "";
@@ -194,6 +207,15 @@ public class AssignmentViewActivity extends AppCompatActivity {
         // The action bar home/up action should open or close the drawer.
         switch (item.getItemId()) {
             case android.R.id.home:
+                if (fromNotification.equals("0"))
+                    finish();
+                else {
+                    Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                    finish();
+                }
                 finish();
                 return true;
             case R.id.refresh:
@@ -212,7 +234,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
                 final Gson finalGson = gson;
-                BackendUtils.doPostRequest("/grades/class/" + period, new HashMap<String, String>() {{
+                BackendUtils.doGetRequest("/grades/class/" + period, new HashMap<String, String>() {{
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
@@ -263,11 +285,12 @@ public class AssignmentViewActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+
                     }
                 }, getApplicationContext(), this);
                 return true;

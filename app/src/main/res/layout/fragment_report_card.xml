@@ -13,8 +13,10 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:tabGravity="fill"
-        app:tabTextColor="#FFF"
-        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextColor="@color/white"
+        app:tabIndicatorColor="@android:color/white"
+        app:tabSelectedTextColor="@color/white"
+        app:tabIndicatorHeight="3dp"
         />
 
 

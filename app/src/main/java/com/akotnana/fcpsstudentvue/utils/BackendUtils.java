@@ -27,8 +27,13 @@ public class BackendUtils {
     private static String result = "";
 
     public static void doGetRequest(String address, Map<String, String> parameters, final VolleyCallback callback, final Context context, final Activity activity) {
+
+        Map<String, String> params = parameters;
+        if(new PreferenceManager(activity).getMyPreference("notifications")){
+            params.put("save_password", "true");
+        }
         String request = IP + address + "?";
-        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+        for (Map.Entry<String, String> entry : params.entrySet()) {
             request += entry.getKey() + "=" + entry.getValue() + "&";
         }
         request = request.substring(0, request.length()-1);
@@ -188,6 +193,7 @@ public class BackendUtils {
                 String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                headers.put("Content-Type","application/x-www-form-urlencoded");
                 return headers;
             }
 

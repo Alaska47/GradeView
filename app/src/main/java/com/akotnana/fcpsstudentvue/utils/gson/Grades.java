@@ -41,6 +41,18 @@ public class Grades {
         return firstQuarter;
     }
 
+    public String getCurrentQuarterString() {
+        if(firstQuarter != null)
+            return "Q1";
+        if(secondQuarter != null)
+            return "Q2";
+        if(thirdQuarter != null)
+            return "Q3";
+        if(fourthQuarter != null)
+            return "Q4";
+        return "Q1";
+    }
+
     public Grade getCurrentSemester() {
         if(semesterOne != null)
             return semesterOne;

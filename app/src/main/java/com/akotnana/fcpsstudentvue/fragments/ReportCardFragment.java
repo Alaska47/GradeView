@@ -73,7 +73,7 @@ public class ReportCardFragment extends Fragment {
                 progressDialog.setCancelable(false);
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
-                BackendUtils.doPostRequest("/report_card", new HashMap<String, String>() {{
+                BackendUtils.doGetRequest("/report_card/", new HashMap<String, String>() {{
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
@@ -113,11 +113,12 @@ public class ReportCardFragment extends Fragment {
                         progressDialog.dismiss();
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(getContext(), SignInActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(intent);
                         }
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(getContext(), SignInActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getActivity().startActivity(intent);
+
                     }
                 }, getContext(), getActivity());
 
@@ -144,7 +145,7 @@ public class ReportCardFragment extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        BackendUtils.doPostRequest("/report_card", new HashMap<String, String>() {{
+        BackendUtils.doGetRequest("/report_card/", new HashMap<String, String>() {{
         }}, new VolleyCallback() {
             @Override
             public void onSuccess(String result) {
@@ -184,11 +185,12 @@ public class ReportCardFragment extends Fragment {
                 progressDialog.dismiss();
                 if(error.networkResponse.statusCode == 401) {
                     Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getContext(), SignInActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(intent);
                 }
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getContext(), SignInActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(intent);
+
             }
         }, getContext(), getActivity());
 

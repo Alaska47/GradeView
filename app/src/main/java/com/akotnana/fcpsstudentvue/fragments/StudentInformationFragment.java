@@ -65,7 +65,7 @@ public class StudentInformationFragment extends Fragment {
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
 
-                BackendUtils.doPostRequest("/user", new HashMap<String, String>() {{
+                BackendUtils.doGetRequest("/user/", new HashMap<String, String>() {{
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
@@ -91,11 +91,12 @@ public class StudentInformationFragment extends Fragment {
                         progressDialog.dismiss();
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(getContext(), SignInActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(intent);
                         }
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(getContext(), SignInActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getActivity().startActivity(intent);
+
                     }
                 }, getContext(), getActivity());
                 return true;
@@ -121,7 +122,7 @@ public class StudentInformationFragment extends Fragment {
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        BackendUtils.doPostRequest("/user", new HashMap<String, String>() {{
+        BackendUtils.doGetRequest("/user/", new HashMap<String, String>() {{
         }}, new VolleyCallback() {
             @Override
             public void onSuccess(String result) {
@@ -147,11 +148,12 @@ public class StudentInformationFragment extends Fragment {
                 progressDialog.dismiss();
                 if(error.networkResponse.statusCode == 401) {
                     Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getContext(), SignInActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(intent);
                 }
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getContext(), SignInActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(intent);
+
             }
         }, getContext(), getActivity());
 

@@ -81,7 +81,7 @@ public class SignInActivity extends AppCompatActivity {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         new DataStorage(getApplicationContext()).storeData("stayLoggedIn", String.valueOf(staySignedIn.isChecked()), true);
                                         Log.d(TAG, String.valueOf(staySignedIn.isChecked()));
-                                        BackendUtils.doPostRequest("/grades", new HashMap<String, String>() {{
+                                        BackendUtils.doGetRequest("/grades/", new HashMap<String, String>() {{
                                         }}, new VolleyCallback() {
                                             @Override
                                             public void onSuccess(String result) {

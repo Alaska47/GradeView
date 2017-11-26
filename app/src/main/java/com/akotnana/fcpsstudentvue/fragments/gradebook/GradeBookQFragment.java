@@ -188,7 +188,7 @@ public class GradeBookQFragment extends Fragment {
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
                 final Gson finalGson = gson;
-                BackendUtils.doPostRequest("/grades/quarter/" + quarterIndex, new HashMap<String, String>() {{
+                BackendUtils.doGetRequest("/grades/quarter/" + quarterIndex + "/", new HashMap<String, String>() {{
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
@@ -230,13 +230,15 @@ public class GradeBookQFragment extends Fragment {
                     @Override
                     public void onError(VolleyError error) {
                         progressDialog.dismiss();
+                        Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(getContext(), SignInActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(intent);
                         }
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(getContext(), SignInActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getActivity().startActivity(intent);
+
                     }
                 }, getContext(), getActivity());
 

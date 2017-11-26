@@ -14,10 +14,14 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.akotnana.fcpsstudentvue.R;
+import com.akotnana.fcpsstudentvue.utils.gson.Course;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Arrays;
+import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -40,14 +44,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // and data payloads are treated as notification messages. The Firebase console always sends notification
 
         // Check if message contains a notification payload.
+        String data = "";
+        if(remoteMessage.getData() != null) {
+            Map<String, String> payload = remoteMessage.getData();
+            data = payload.get("data");
+            Log.d(TAG, data);
+        }
+
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            String bad = "You just logged your ass in!";
-            if(!remoteMessage.getNotification().getBody().contains(bad)) {
-                String[] message = remoteMessage.getNotification().getBody().toString().split(",");
-                Log.d(TAG, Arrays.toString(message));
-                sendNotification(message);
-            }
+            sendNotification(new String[]{remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(), data});
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -63,9 +69,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(String[] messageBody) {
         //TODO: change from null to something actual
         Intent intent = new Intent(this, null);
-        intent.putExtra("id", messageBody[1]);
-        intent.putExtra("question", messageBody[2]);
-        intent.putExtra("type", messageBody[3]);
+
+        Gson gson = null;
+        try {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gson = gsonBuilder.create();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Course course = gson.fromJson(messageBody[2], Course.class);
+
+        intent.putExtra("currentQuarter", course.getGrades().getCurrentQuarterString());
+        intent.putExtra("period", course.getPeriodNumber());
+        intent.putExtra("assignments", messageBody[2]);
         intent.putExtra("fromNotification", "1");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -74,8 +90,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
-                        .setContentTitle("Update!")
-                        .setContentText(messageBody[0])
+                        .setContentTitle(messageBody[0])
+                        .setContentText(messageBody[1])
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);

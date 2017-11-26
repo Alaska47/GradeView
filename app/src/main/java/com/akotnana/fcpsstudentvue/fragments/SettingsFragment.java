@@ -113,7 +113,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                             progressDialog.setMessage("Loading...");
                                             progressDialog.show();
 
-                                            BackendUtils.doPostRequest("/devices", new HashMap<String, String>() {{
+                                            BackendUtils.doPostRequest("/devices/", new HashMap<String, String>() {{
                                                 put("registration_id", new DataStorage(getContext()).getData("firebaseID"));
                                                 put("active", "true");
                                                 put("type", "android");
@@ -126,14 +126,16 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
 
                                                 @Override
                                                 public void onError(VolleyError error) {
+                                                    Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
                                                     progressDialog.dismiss();
                                                     if(error.networkResponse.statusCode == 401) {
                                                         Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                                                        FirebaseAuth.getInstance().signOut();
+                                                        Intent intent = new Intent(getContext(), SignInActivity.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        getActivity().startActivity(intent);
                                                     }
-                                                    FirebaseAuth.getInstance().signOut();
-                                                    Intent intent = new Intent(getContext(), SignInActivity.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    getActivity().startActivity(intent);
+
                                                 }
                                             }, getContext(), getActivity());
                                         }
@@ -152,7 +154,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                             progressDialog.setMessage("Loading...");
                                             progressDialog.show();
 
-                                            BackendUtils.doPostRequest("/devices", new HashMap<String, String>() {{
+                                            BackendUtils.doPostRequest("/devices/", new HashMap<String, String>() {{
                                                 put("registration_id", new DataStorage(getContext()).getData("firebaseID"));
                                                 put("active", "true");
                                                 put("type", "android");
@@ -166,13 +168,15 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                                 @Override
                                                 public void onError(VolleyError error) {
                                                     progressDialog.dismiss();
+                                                    Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
                                                     if(error.networkResponse.statusCode == 401) {
                                                         Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                                                        FirebaseAuth.getInstance().signOut();
+                                                        Intent intent = new Intent(getContext(), SignInActivity.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        getActivity().startActivity(intent);
                                                     }
-                                                    FirebaseAuth.getInstance().signOut();
-                                                    Intent intent = new Intent(getContext(), SignInActivity.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    getActivity().startActivity(intent);
+
                                                 }
                                             }, getContext(), getActivity());
 
@@ -213,7 +217,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
 
-                BackendUtils.doPostRequest("/devices", new HashMap<String, String>() {{
+                BackendUtils.doPostRequest("/devices/", new HashMap<String, String>() {{
                     put("registration_id", new DataStorage(getContext()).getData("firebaseID"));
                     put("active", String.valueOf(new PreferenceManager(getActivity()).getMyPreference("notifications")));
                     put("type", "android");
@@ -226,14 +230,16 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
 
                     @Override
                     public void onError(VolleyError error) {
+                        Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
                         progressDialog.dismiss();
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(getContext(), SignInActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(intent);
                         }
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(getContext(), SignInActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getActivity().startActivity(intent);
+
                     }
                 }, getContext(), getActivity());
                 return true;

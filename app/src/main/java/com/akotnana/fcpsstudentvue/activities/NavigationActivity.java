@@ -134,7 +134,7 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "clicked");
-                BackendUtils.doPostRequest("/user", new HashMap<String, String>() {{
+                BackendUtils.doGetRequest("/user/", new HashMap<String, String>() {{
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
@@ -156,18 +156,19 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
                     public void onError(VolleyError error) {
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+
                     }
                 }, getApplicationContext(), NavigationActivity.this);
             }
         });
 
 
-        BackendUtils.doPostRequest("/user", new HashMap<String, String>() {{
+        BackendUtils.doGetRequest("/user/", new HashMap<String, String>() {{
         }}, new VolleyCallback() {
             @Override
             public void onSuccess(String result) {
@@ -188,11 +189,12 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
             public void onError(VolleyError error) {
                 if(error.networkResponse.statusCode == 401) {
                     Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+
             }
         }, getApplicationContext(), NavigationActivity.this);
     }

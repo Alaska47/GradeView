@@ -10,10 +10,12 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="preferenceTheme">@style/PreferenceStyle</item>
+
     </style>
 
-    <style name="PreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
+    <style name="PreferenceStyle" parent="@style/PreferenceFixTheme.Light.NoActionBar">
         <item name="preferenceCategoryStyle">@style/CustomPreferenceCategory</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="CustomPreferenceCategory" parent="@style/Preference.Category">

@@ -115,7 +115,7 @@ public class GradeBookQFragment extends Fragment {
     }
 
     private void initializeAdapter() {
-        adapter = new RVAdapterGrade(gradesCards, getContext());
+        adapter = new RVAdapterGrade(gradesCards, getContext(), getActivity());
         rv.setAdapter(adapter);
     }
 
@@ -227,7 +227,7 @@ public class GradeBookQFragment extends Fragment {
                     public void onError(VolleyError error) {
                         progressDialog.dismiss();
                     }
-                }, getContext());
+                }, getContext(), getActivity());
 
             }
 

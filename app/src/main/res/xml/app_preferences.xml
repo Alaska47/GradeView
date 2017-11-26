@@ -4,11 +4,17 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="General">
 
-        <Preference
-            android:selectable="false"
-            android:enabled="true"
-            android:key="version_key"
-            android:title="Version: 1.0.0"/>
+        <android.support.v7.preference.Preference
+            android:key="version"
+            android:title="Version 1.0.0"
+            android:summary="Logged in as: "
+            android:dialogTitle="" />
+
+        <android.support.v7.preference.CheckBoxPreference
+            android:key="color"
+            android:title="Color Code Grades"
+            android:summary="Color code grades so that As are green, Bs are orange, Cs are yellow, Ds and Fs are red."
+            android:defaultValue="true"/>
 
     </android.support.v7.preference.PreferenceCategory>
 

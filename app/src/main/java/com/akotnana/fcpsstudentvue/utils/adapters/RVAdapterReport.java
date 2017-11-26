@@ -1,5 +1,6 @@
 package com.akotnana.fcpsstudentvue.utils.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.CardView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.akotnana.fcpsstudentvue.R;
 import com.akotnana.fcpsstudentvue.utils.ColorManager;
+import com.akotnana.fcpsstudentvue.utils.PreferenceManager;
 import com.akotnana.fcpsstudentvue.utils.cards.ReportCourseCard;
 
 import java.util.List;
@@ -47,10 +49,12 @@ public class RVAdapterReport extends RecyclerView.Adapter<RVAdapterReport.Report
 
     List<ReportCourseCard> reportCourseCards;
     Context context;
+    Activity a;
 
-    public RVAdapterReport(List<ReportCourseCard> reports, Context con){
+    public RVAdapterReport(List<ReportCourseCard> reports, Context con, Activity a){
         this.reportCourseCards = reports;
         this.context = con;
+        this.a = a;
     }
 
     @Override
@@ -88,9 +92,15 @@ public class RVAdapterReport extends RecyclerView.Adapter<RVAdapterReport.Report
         }
         //reportViewHolder.quarterReport.setTextColor(ColorManager.getColor(scoreToLetterGrade(Double.parseDouble(reportCourseCards.get(i).quarterReportPercentage))));
 
-        GradientDrawable sd = (GradientDrawable) reportViewHolder.quarterReport.getBackground().mutate();
-        sd.setColor(ColorManager.getColor(reportCourseCards.get(i).quarterReport));
-        sd.invalidateSelf();
+        if(new PreferenceManager(a).getMyPreference("color")){
+            GradientDrawable sd = (GradientDrawable) reportViewHolder.quarterReport.getBackground().mutate();
+            sd.setColor(ColorManager.getColor(reportCourseCards.get(i).quarterReport));
+            sd.invalidateSelf();
+        } else {
+            GradientDrawable sd = (GradientDrawable) reportViewHolder.quarterReport.getBackground().mutate();
+            sd.setColor(ColorManager.getColor("N/A"));
+            sd.invalidateSelf();
+        }
 
         reportViewHolder.semesterReport.setText(reportCourseCards.get(i).semesterReport);
 

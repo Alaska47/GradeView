@@ -1,5 +1,6 @@
 package com.akotnana.fcpsstudentvue.utils.adapters;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.akotnana.fcpsstudentvue.R;
 import com.akotnana.fcpsstudentvue.utils.ColorManager;
+import com.akotnana.fcpsstudentvue.utils.PreferenceManager;
 import com.akotnana.fcpsstudentvue.utils.cards.AssignmentCard;
 
 import org.w3c.dom.Text;
@@ -42,9 +44,11 @@ public class RVAdapterAssignment extends RecyclerView.Adapter<RVAdapterAssignmen
     }
 
     List<AssignmentCard> assignmentCards;
+    Activity a;
 
-    public RVAdapterAssignment(List<AssignmentCard> grades){
+    public RVAdapterAssignment(List<AssignmentCard> grades, Activity a){
         this.assignmentCards = grades;
+        this.a = a;
     }
 
     @Override
@@ -76,10 +80,17 @@ public class RVAdapterAssignment extends RecyclerView.Adapter<RVAdapterAssignmen
             gradeViewHolder.gradeLetter.setText(assignmentCards.get(i).grade);
             gradeViewHolder.gradeLetter.setTextSize(26f);
         }
-        //gradeViewHolder.gradeLetter.setBackgroundColor(ColorManager.getColor(assignmentCards.get(i).grade));
-        GradientDrawable sd = (GradientDrawable) gradeViewHolder.gradeLetter.getBackground().mutate();
-        sd.setColor(ColorManager.getColor(assignmentCards.get(i).grade));
-        sd.invalidateSelf();
+
+        if(new PreferenceManager(a).getMyPreference("color")){
+            GradientDrawable sd = (GradientDrawable) gradeViewHolder.gradeLetter.getBackground().mutate();
+            sd.setColor(ColorManager.getColor(assignmentCards.get(i).grade));
+            sd.invalidateSelf();
+        } else {
+            GradientDrawable sd = (GradientDrawable) gradeViewHolder.gradeLetter.getBackground().mutate();
+            sd.setColor(ColorManager.getColor("N/A"));
+            sd.invalidateSelf();
+        }
+
         gradeViewHolder.score.setText("Score: " + assignmentCards.get(i).score);
         gradeViewHolder.points.setText("Points: " + assignmentCards.get(i).points);
     }

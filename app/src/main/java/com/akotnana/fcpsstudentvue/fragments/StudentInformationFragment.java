@@ -86,7 +86,7 @@ public class StudentInformationFragment extends Fragment {
                     public void onError(VolleyError error) {
                         progressDialog.dismiss();
                     }
-                }, getContext());
+                }, getContext(), getActivity());
                 return true;
             }
         }
@@ -135,7 +135,7 @@ public class StudentInformationFragment extends Fragment {
             public void onError(VolleyError error) {
                 progressDialog.dismiss();
             }
-        }, getContext());
+        }, getContext(), getActivity());
 
         return v;
     }

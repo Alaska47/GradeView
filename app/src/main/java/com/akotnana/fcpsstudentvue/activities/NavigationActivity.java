@@ -32,6 +32,8 @@ import com.akotnana.fcpsstudentvue.fragments.ScheduleFragment;
 import com.akotnana.fcpsstudentvue.fragments.SettingsFragment;
 import com.akotnana.fcpsstudentvue.fragments.StudentInformationFragment;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
+import com.akotnana.fcpsstudentvue.utils.DataStorage;
+import com.akotnana.fcpsstudentvue.utils.PreferenceManager;
 import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
 import com.akotnana.fcpsstudentvue.utils.gson.User;
 import com.android.volley.VolleyError;
@@ -128,6 +130,42 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
         final CircleImageView imageView = (CircleImageView) hView.findViewById(R.id.materialup_profile_image);
         final TextView nameView = (TextView) hView.findViewById(R.id.profile_name);
 
+        hView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "clicked");
+                BackendUtils.doPostRequest("/user", new HashMap<String, String>() {{
+                }}, new VolleyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Gson gson = null;
+                        try {
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            gson = gsonBuilder.create();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        User user = gson.fromJson(result, User.class);
+                        imageView.setImageDrawable(new BitmapDrawable(getResources(), bitmapSizeByScale(user.getPhoto(), 7)));
+                        nameView.setText(user.getFullName());
+                        new DataStorage(getApplicationContext()).storeData("userFullName", user.getFullName(), true);
+                        Log.d(TAG, "updated");
+                    }
+
+                    @Override
+                    public void onError(VolleyError error) {
+                        if(error.networkResponse.statusCode == 401) {
+                            Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                        }
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }, getApplicationContext(), NavigationActivity.this);
+            }
+        });
+
 
         BackendUtils.doPostRequest("/user", new HashMap<String, String>() {{
         }}, new VolleyCallback() {
@@ -143,13 +181,20 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
                 User user = gson.fromJson(result, User.class);
                 imageView.setImageDrawable(new BitmapDrawable(getResources(), bitmapSizeByScale(user.getPhoto(), 7)));
                 nameView.setText(user.getFullName());
+                new DataStorage(getApplicationContext()).storeData("userFullName", user.getFullName(), true);
             }
 
             @Override
             public void onError(VolleyError error) {
-
+                if(error.networkResponse.statusCode == 401) {
+                    Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                }
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
-        }, getApplicationContext());
+        }, getApplicationContext(), NavigationActivity.this);
     }
 
     public Bitmap bitmapSizeByScale(Bitmap bitmapIn, float scall_zero_to_one_f) {

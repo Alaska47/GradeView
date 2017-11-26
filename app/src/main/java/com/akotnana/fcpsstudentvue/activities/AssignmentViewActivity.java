@@ -1,6 +1,7 @@
 package com.akotnana.fcpsstudentvue.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akotnana.fcpsstudentvue.R;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
@@ -23,6 +25,7 @@ import com.akotnana.fcpsstudentvue.utils.gson.Assignment;
 import com.akotnana.fcpsstudentvue.utils.gson.Course;
 import com.akotnana.fcpsstudentvue.utils.gson.Quarter;
 import com.android.volley.VolleyError;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -117,7 +120,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
     }
 
     private void initializeAdapter() {
-        adapter = new RVAdapterAssignment(assignmentCards);
+        adapter = new RVAdapterAssignment(assignmentCards, this);
         rv.setAdapter(adapter);
     }
 
@@ -258,8 +261,15 @@ public class AssignmentViewActivity extends AppCompatActivity {
                     @Override
                     public void onError(VolleyError error) {
                         progressDialog.dismiss();
+                        if(error.networkResponse.statusCode == 401) {
+                            Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                        }
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
-                }, getApplicationContext());
+                }, getApplicationContext(), this);
                 return true;
         }
 

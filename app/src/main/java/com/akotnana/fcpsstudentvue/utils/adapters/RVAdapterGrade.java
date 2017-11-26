@@ -1,7 +1,9 @@
 package com.akotnana.fcpsstudentvue.utils.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import com.akotnana.fcpsstudentvue.activities.AssignmentViewActivity;
 import com.akotnana.fcpsstudentvue.R;
 import com.akotnana.fcpsstudentvue.utils.ColorManager;
 import com.akotnana.fcpsstudentvue.utils.DataStorage;
+import com.akotnana.fcpsstudentvue.utils.PreferenceManager;
 import com.akotnana.fcpsstudentvue.utils.cards.GradeCourseCard;
 import com.google.gson.Gson;
 
@@ -52,10 +55,12 @@ public class RVAdapterGrade extends RecyclerView.Adapter<RVAdapterGrade.GradeVie
 
     List<GradeCourseCard> gradeCourseCards;
     Context context;
+    Activity a;
 
-    public RVAdapterGrade(List<GradeCourseCard> grades, Context con) {
+    public RVAdapterGrade(List<GradeCourseCard> grades, Context con, Activity a) {
         this.gradeCourseCards = grades;
         this.context = con;
+        this.a = a;
     }
 
     @Override
@@ -86,15 +91,21 @@ public class RVAdapterGrade extends RecyclerView.Adapter<RVAdapterGrade.GradeVie
         gradeViewHolder.quarterName.setText(gradeCourseCards.get(i).quarterName);
         gradeViewHolder.semesterName.setText(gradeCourseCards.get(i).semesterName);
         gradeViewHolder.quarterGrade.setText(gradeCourseCards.get(i).quarterGrade);
-
-        gradeViewHolder.quarterGrade.setTextColor(ColorManager.getColor(scoreToLetterGrade(Double.parseDouble(gradeCourseCards.get(i).quarterGrade))));
-
+        if(new PreferenceManager(a).getMyPreference("color")) {
+            gradeViewHolder.quarterGrade.setTextColor(ColorManager.getColor(scoreToLetterGrade(Double.parseDouble(gradeCourseCards.get(i).quarterGrade))));
+        } else {
+            gradeViewHolder.quarterGrade.setTextColor(Color.BLACK);
+        }
 
         gradeViewHolder.semesterGrade.setText(gradeCourseCards.get(i).semesterGrade);
 
-        if (!gradeCourseCards.get(i).semesterGrade.equals("N/A"))
-            gradeViewHolder.semesterGrade.setTextColor(ColorManager.getColor(scoreToLetterGrade(Double.parseDouble(gradeCourseCards.get(i).semesterGrade))));
-
+        if(new PreferenceManager(a).getMyPreference("color")) {
+            if (!gradeCourseCards.get(i).semesterGrade.equals("N/A"))
+                gradeViewHolder.semesterGrade.setTextColor(ColorManager.getColor(scoreToLetterGrade(Double.parseDouble(gradeCourseCards.get(i).semesterGrade))));
+        } else {
+            if (!gradeCourseCards.get(i).semesterGrade.equals("N/A"))
+                gradeViewHolder.semesterGrade.setTextColor(Color.BLACK);
+        }
         gradeViewHolder.finalExamGrade.setText(gradeCourseCards.get(i).finalExamGrade);
         gradeViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override

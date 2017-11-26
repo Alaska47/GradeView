@@ -17,6 +17,7 @@ import com.akotnana.fcpsstudentvue.R;
 import com.akotnana.fcpsstudentvue.utils.AccountManager;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
 import com.akotnana.fcpsstudentvue.utils.DataStorage;
+import com.akotnana.fcpsstudentvue.utils.PreferenceManager;
 import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
 import com.android.volley.VolleyError;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -61,6 +62,9 @@ public class SignInActivity extends AppCompatActivity {
                 if (!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
                     new AccountManager(getApplicationContext()).saveCredentials(username.getText().toString(), password.getText().toString());
 
+                    new PreferenceManager(SignInActivity.this).setMyPreference("notifications", false);
+                    new PreferenceManager(SignInActivity.this).setMyPreference("color", true);
+
                     final ProgressDialog progressDialog = new ProgressDialog(SignInActivity.this,
                             R.style.AppTheme_Dark_Dialog);
                     progressDialog.setIndeterminate(true);
@@ -91,9 +95,13 @@ public class SignInActivity extends AppCompatActivity {
 
                                             @Override
                                             public void onError(VolleyError error) {
+                                                Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
+                                                if(error.networkResponse.statusCode == 401) {
+                                                    Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                                                }
                                                 progressDialog.dismiss();
                                             }
-                                        }, getApplicationContext());
+                                        }, getApplicationContext(), SignInActivity.this);
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "signInAnonymously:failure", task.getException());

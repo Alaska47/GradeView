@@ -13,15 +13,15 @@ public class ColorManager {
             if(grade.length() == 1)
                 return darken(baseColor, 0.5);
             else
-                return darken(baseColor, 0.4);
+                return darken(baseColor, 0.25);
         } else if(grade.charAt(0) == 'B') {
-            int baseColor = darken(Color.parseColor("#ffa500"), 0.25);
+            int baseColor = Color.parseColor("#ffa500");
             if(grade.length() == 1)
                 return baseColor;
             if(grade.charAt(1) == '+') {
-                baseColor = darken(baseColor, 0.1);
+                baseColor = darken(baseColor, 0.175);
             } else {
-                baseColor = lighten(baseColor, 0.1);
+                baseColor = lighten(baseColor, 0.175);
             }
             return baseColor;
         } else if(grade.charAt(0) == 'C') {
@@ -29,9 +29,9 @@ public class ColorManager {
             if(grade.length() == 1)
                 return baseColor;
             if(grade.charAt(1) == '+') {
-                baseColor = darken(baseColor, 0.1);
+                baseColor = darken(baseColor, 0.25);
             } else {
-                baseColor = lighten(baseColor, 0.1);
+                baseColor = lighten(baseColor, 0.25);
             }
             return baseColor;
         } else if(grade.charAt(0) == 'D') {
@@ -39,13 +39,13 @@ public class ColorManager {
             if(grade.length() == 1)
                 return baseColor;
             if(grade.charAt(1) == '+') {
-                baseColor = darken(baseColor, 0.1);
+                baseColor = darken(baseColor, 0.25);
             } else {
-                baseColor = lighten(baseColor, 0.1);
+                baseColor = lighten(baseColor, 0.25);
             }
             return baseColor;
         } else if(grade.charAt(0) == 'F') {
-            return lighten(Color.RED, 0.25);
+            return lighten(Color.RED, 0.5);
         } else {
             return Color.BLACK;
         }

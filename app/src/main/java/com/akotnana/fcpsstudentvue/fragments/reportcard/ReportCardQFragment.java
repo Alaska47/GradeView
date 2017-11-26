@@ -109,7 +109,7 @@ public class ReportCardQFragment extends Fragment {
     }
 
     private void initializeAdapter() {
-        adapter = new RVAdapterReport(reportsCards, getContext());
+        adapter = new RVAdapterReport(reportsCards, getContext(), getActivity());
         rv.setAdapter(adapter);
     }
 

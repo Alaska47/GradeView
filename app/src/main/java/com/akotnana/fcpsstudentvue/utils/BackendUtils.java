@@ -1,5 +1,6 @@
 package com.akotnana.fcpsstudentvue.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
@@ -25,7 +26,7 @@ public class BackendUtils {
 
     private static String result = "";
 
-    public static void doGetRequest(String address, Map<String, String> parameters, final VolleyCallback callback, final Context context) {
+    public static void doGetRequest(String address, Map<String, String> parameters, final VolleyCallback callback, final Context context, final Activity activity) {
         String request = IP + address + "?";
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             request += entry.getKey() + "=" + entry.getValue() + "&";
@@ -80,7 +81,7 @@ public class BackendUtils {
                 .getRequestQueue().add(stringRequest);
     }
 
-    public static void doCustomGetRequest(String address, Map<String, String> parameters, final VolleyCallback callback, final Context context) {
+    public static void doCustomGetRequest(String address, Map<String, String> parameters, final VolleyCallback callback, final Context context, final Activity activity) {
         String request = address + "?";
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
             request += entry.getKey() + "=" + entry.getValue() + "&";
@@ -137,7 +138,7 @@ public class BackendUtils {
                 .getRequestQueue().add(stringRequest);
     }
 
-    public static void doPostRequest(String address, final Map<String, String> parameters, final VolleyCallback callback, final Context context) {
+    public static void doPostRequest(String address, final Map<String, String> parameters, final VolleyCallback callback, final Context context, final Activity activity) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 IP + address,
                 new Response.Listener<String>() {
@@ -168,7 +169,11 @@ public class BackendUtils {
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                return parameters;
+                Map<String, String> params = parameters;
+                if(new PreferenceManager(activity).getMyPreference("notifications")){
+                    params.put("save_password", "true");
+                }
+                return params;
             }
 
             @Override

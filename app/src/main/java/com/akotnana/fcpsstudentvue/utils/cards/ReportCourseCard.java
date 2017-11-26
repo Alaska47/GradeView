@@ -5,4 +5,5 @@ package com.akotnana.fcpsstudentvue.utils.cards;
  */
 
 public class ReportCourseCard {
+
 }

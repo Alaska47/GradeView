@@ -145,7 +145,7 @@ public class GradeBookQFragment extends Fragment {
                 errorSnack.show();
             }
             for (Course course : courses) {
-                gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGradePercentage(), "N/A", "N/A", course));
+                gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGrades().getCurrentQuarter().getPercentage(), course.getGrades().getCurrentSemester().getPercentage(), "N/A", course));
             }
             hasAlreadyLoaded = true;
             initializeAdapter();
@@ -192,7 +192,7 @@ public class GradeBookQFragment extends Fragment {
                         Quarter quarter = finalGson.fromJson(result, Quarter.class);
                         Course[] courses = quarter.getCourses();
                         for (Course course : courses) {
-                            gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGradePercentage(), "N/A", "N/A", course));
+                            gradesCards.add(new GradeCourseCard(course.getPeriodNumber(), course.getCourseName(), course.getTeacher(), course.getRoomNumber(), quarterName, semesterName, course.getGrades().getCurrentQuarter().getPercentage(), course.getGrades().getCurrentSemester().getPercentage(), "N/A", course));
                         }
                         if(courses.length < 1) {
                             Log.i(TAG, "Snackbar called!");

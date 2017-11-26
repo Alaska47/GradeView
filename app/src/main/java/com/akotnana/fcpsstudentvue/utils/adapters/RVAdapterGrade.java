@@ -89,7 +89,11 @@ public class RVAdapterGrade extends RecyclerView.Adapter<RVAdapterGrade.GradeVie
 
         gradeViewHolder.quarterGrade.setTextColor(ColorManager.getColor(scoreToLetterGrade(Double.parseDouble(gradeCourseCards.get(i).quarterGrade))));
 
+
         gradeViewHolder.semesterGrade.setText(gradeCourseCards.get(i).semesterGrade);
+
+        gradeViewHolder.semesterGrade.setTextColor(ColorManager.getColor(scoreToLetterGrade(Double.parseDouble(gradeCourseCards.get(i).semesterGrade))));
+
         gradeViewHolder.finalExamGrade.setText(gradeCourseCards.get(i).finalExamGrade);
         if(new DataStorage(context).getData("currentQuarter").equals(gradeCourseCards.get(i).quarterName)) {
             gradeViewHolder.cv.setOnClickListener(new View.OnClickListener() {

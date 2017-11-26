@@ -18,10 +18,8 @@ public class Course {
     String roomNumber;
     @SerializedName("assignments")
     Assignment[] assignments;
-    @SerializedName("grade_letter")
-    String gradeLetter;
-    @SerializedName("grade_percentage")
-    String gradePercentage;
+    @SerializedName("grades")
+    Grades grades;
     @SerializedName("teacher")
     String teacher;
 
@@ -46,13 +44,7 @@ public class Course {
         return assignments;
     }
 
-    public String getGradeLetter() {
-        return gradeLetter;
-    }
-
-    public String getGradePercentage() {
-        return gradePercentage;
-    }
+    public Grades getGrades() { return this.grades; }
 
     public String getTeacher() {
         return teacher;
@@ -60,6 +52,6 @@ public class Course {
 
     @Override
     public String toString() {
-        return getCourseName() + " | " + getTeacher() + " | " + getRoomNumber() + " | " + getGradePercentage() + " | " + Arrays.toString(assignments);
+        return getCourseName() + " | " + getTeacher() + " | " + getRoomNumber() + " | " + Arrays.toString(assignments);
     }
 }

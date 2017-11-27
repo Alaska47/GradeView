@@ -112,6 +112,7 @@ public class IntroActivity extends MaterialIntroActivity {
                     public void onClick(View v) {
                         if(new PreferenceManager(IntroActivity.this).getMyPreference("notifications") != true) {
                             new PreferenceManager(IntroActivity.this).setMyPreference("notifications", true);
+                            new DataStorage(getApplicationContext()).storeData("notificationsFirstValue", "true", true);
 
                             final ProgressDialog progressDialog = new ProgressDialog(IntroActivity.this,
                                     R.style.AppTheme_Dark_Dialog);
@@ -142,6 +143,8 @@ public class IntroActivity extends MaterialIntroActivity {
                                         Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         IntroActivity.this.startActivity(intent);
+                                        overridePendingTransition(0, 0);
+                                        finish();
                                     }
 
                                 }

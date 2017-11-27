@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -40,6 +43,7 @@ public class SignInActivity extends AppCompatActivity {
     EditText password;
     Button signIn;
     CheckBox staySignedIn;
+    CheckBox showPassword;
 
     private FirebaseAuth mAuth;
 
@@ -57,6 +61,25 @@ public class SignInActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.input_password);
         signIn = (Button) findViewById(R.id.login_button);
         staySignedIn = (CheckBox) findViewById(R.id.stay_signed_in);
+        showPassword = (CheckBox) findViewById(R.id.show_password);
+
+        showPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*
+                if(password.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                else if(password.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+                    password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                Log.d(TAG, "password checkbox clicked");
+                */
+                if (showPassword.isChecked()){
+                    password.setTransformationMethod(null);
+                }else{
+                    password.setTransformationMethod(new PasswordTransformationMethod());
+                }
+            }
+        });
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -61,7 +61,7 @@ public class GradeBookFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_grade_book, container, false);
+        final View v = inflater.inflate(R.layout.fragment_grade_book, container, false);
 
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         viewPager = (ViewPager) v.findViewById(R.id.pager);
@@ -132,9 +132,8 @@ public class GradeBookFragment extends Fragment {
 
                         tabLayout.setupWithViewPager(viewPager);
 
-
-
-                        progressDialog.dismiss();
+                        if(v.isShown())
+                            progressDialog.dismiss();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -149,6 +148,8 @@ public class GradeBookFragment extends Fragment {
                         Intent intent = new Intent(getContext(), SignInActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         getActivity().startActivity(intent);
+                        getActivity().overridePendingTransition(0, 0);
+                        getActivity().finish();
                     }
 
                 }
@@ -321,6 +322,8 @@ public class GradeBookFragment extends Fragment {
                             Intent intent = new Intent(getContext(), SignInActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             getActivity().startActivity(intent);
+                            getActivity().overridePendingTransition(0, 0);
+                            getActivity().finish();
                         }
 
                     }

@@ -79,11 +79,14 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
 
             sendNotifications = (CheckBoxPreference)  getPreferenceManager().findPreference("notifications");
             if(new DataStorage(getContext()).getData("notificationsFirstValue").equals("")) {
-                Log.d(TAG, "first time opening preferences");
+                Log.d(TAG, "first time opening preferences with notification");
                 sendNotifications.setChecked(false);
-                colorCodeGrades.setChecked(true);
                 new DataStorage(getContext()).storeData("notificationsFirstValue", "true", true);
                 new PreferenceManager(getActivity()).setMyPreference("notifications", false);
+            }
+            if(new DataStorage(getContext()).getData("colorFirstValue").equals("")) {
+                colorCodeGrades.setChecked(true);
+                new DataStorage(getContext()).storeData("colorFirstValue", "true", true);
                 new PreferenceManager(getActivity()).setMyPreference("color", true);
             }
             sendNotifications.setChecked(new PreferenceManager(getActivity()).getMyPreference("notifications"));
@@ -131,6 +134,8 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                                         Intent intent = new Intent(getContext(), SignInActivity.class);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         getActivity().startActivity(intent);
+                                                        getActivity().overridePendingTransition(0, 0);
+                                                        getActivity().finish();
                                                     }
 
                                                 }
@@ -172,6 +177,8 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                                         Intent intent = new Intent(getContext(), SignInActivity.class);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         getActivity().startActivity(intent);
+                                                        getActivity().overridePendingTransition(0, 0);
+                                                        getActivity().finish();
                                                     }
 
                                                 }
@@ -211,6 +218,8 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                         Intent intent = new Intent(getContext(), SignInActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         getActivity().startActivity(intent);
+                                        getActivity().overridePendingTransition(0, 0);
+                                        getActivity().finish();
                                     }
 
                                 }
@@ -264,6 +273,8 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                             Intent intent = new Intent(getContext(), SignInActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             getActivity().startActivity(intent);
+                            getActivity().overridePendingTransition(0, 0);
+                            getActivity().finish();
                         }
 
                     }

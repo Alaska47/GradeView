@@ -12,11 +12,11 @@
         android:layout_marginBottom="55dp">
 
         <LinearLayout
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:layout_marginBottom="24dp"
             android:orientation="vertical"
             android:paddingLeft="24dp"
@@ -42,8 +42,8 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/TextLabel"
-                android:layout_marginTop="2dp">
+                android:layout_marginTop="2dp"
+                android:theme="@style/TextLabel">
 
                 <EditText
                     android:id="@+id/input_username"
@@ -53,9 +53,9 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/ic_person_white_24dp"
                     android:hint="Username"
+                    android:inputType="text"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:inputType="text" />
+                    android:textColorHint="@color/white" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Password Label -->
@@ -63,8 +63,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:theme="@style/TextLabel"
-                android:layout_marginTop="2dp">
+                android:layout_marginTop="2dp"
+                android:theme="@style/TextLabel">
 
                 <EditText
                     android:id="@+id/input_password"
@@ -74,21 +74,43 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/ic_lock_white_24dp"
                     android:hint="Password"
+                    android:inputType="textPassword"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:inputType="textPassword" />
+                    android:textColorHint="@color/white" />
             </android.support.design.widget.TextInputLayout>
 
-            <CheckBox
-                android:layout_width="wrap_content"
+            <TableLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/stay_signed_in"
-                android:checked="true"
-                android:layoutDirection="rtl"
-                android:layout_gravity="right"
-                android:textColor="@color/white"
-                android:buttonTint="@color/white"
-                android:text="Stay logged in"/>
+                android:stretchColumns="1">
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/show_password"
+                        android:layout_width="wrap_content"
+                        android:buttonTint="@color/white"
+                        android:checked="false"
+                        android:textColor="@color/white"
+                        android:layout_height="wrap_content"
+                        android:text="Show password" />
+
+                    <CheckBox
+                        android:id="@+id/stay_signed_in"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/white"
+                        android:checked="true"
+                        android:layoutDirection="rtl"
+                        android:textColor="@color/white"
+                        android:layout_gravity="right|center_vertical"
+                        android:text="Stay logged in"
+                        />
+                </TableRow>
+            </TableLayout>
+
 
         </LinearLayout>
 
@@ -107,14 +129,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="?attr/selectableItemBackground"
         android:backgroundTint="@color/colorAccent"
-        android:stateListAnimator="@null"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:text="SIGN IN"
         android:clickable="true"
         android:focusable="true"
-        android:background="?attr/selectableItemBackground"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:stateListAnimator="@null"
+        android:text="SIGN IN"
         android:textColor="@color/white"
         android:textSize="20sp" />
 

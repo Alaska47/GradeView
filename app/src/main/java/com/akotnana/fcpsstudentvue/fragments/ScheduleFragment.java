@@ -154,6 +154,8 @@ public class ScheduleFragment extends Fragment {
                     Intent intent = new Intent(getContext(), SignInActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(0, 0);
+                    getActivity().finish();
                 }
 
             }

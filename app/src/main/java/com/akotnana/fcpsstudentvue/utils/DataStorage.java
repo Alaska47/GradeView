@@ -31,15 +31,16 @@ public class DataStorage {
     }
 
     public void storeData(String key, String value, boolean async) {
+        if(context != null) {
+            SharedPreferences.Editor editor = context.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
+            editor.putString(key, value);
+            //Log.d("DATASTORAGE", key + ":" + value);
 
-        SharedPreferences.Editor editor = context.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
-        editor.putString(key,value);
-        //Log.d("DATASTORAGE", key + ":" + value);
-
-        if(async)
-            editor.apply();
-        else
-            editor.commit();
+            if (async)
+                editor.apply();
+            else
+                editor.commit();
+        }
     }
 
     public String getAuthToken() {
@@ -61,7 +62,9 @@ public class DataStorage {
     }
 
     public String getData(String key) {
-        return context.getSharedPreferences("PREFS", Context.MODE_PRIVATE).getString(key, "");
+        if(context != null)
+            return context.getSharedPreferences("PREFS", Context.MODE_PRIVATE).getString(key, "");
+        return "";
     }
 
     public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight)

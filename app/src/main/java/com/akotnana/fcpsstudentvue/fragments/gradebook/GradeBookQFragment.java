@@ -125,7 +125,7 @@ public class GradeBookQFragment extends Fragment {
 
     private void initializeData() {
         Log.d(TAG, "SelectedQuarter from " + quarterName + " : " + new DataStorage(getContext()).getData("selectedQuarter"));
-        if (Integer.parseInt(new DataStorage(getContext()).getData("selectedQuarter")) == quarterIndex) {
+        if ((!new DataStorage(getContext()).getData("selectedQuarter").equals("")) && Integer.parseInt(new DataStorage(getContext()).getData("selectedQuarter")) == quarterIndex) {
             new DataStorage(getContext()).storeData("selectedQuarter", "-1", false);
             Log.d(TAG, quarterName + " is loading what is already loaded now!");
             gradesCards = new ArrayList<>();

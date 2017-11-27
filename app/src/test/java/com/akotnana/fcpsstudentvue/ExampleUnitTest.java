@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue;
+package com.akotnana.gradeview;
 
 import org.junit.Test;
 

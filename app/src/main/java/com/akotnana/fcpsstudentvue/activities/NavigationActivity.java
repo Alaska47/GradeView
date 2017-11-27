@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.activities;
+package com.akotnana.gradeview.activities;
 
 /**
  * Created by anees on 11/23/2017.
@@ -26,19 +26,19 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.akotnana.fcpsstudentvue.R;
-import com.akotnana.fcpsstudentvue.fragments.GradeBookFragment;
-import com.akotnana.fcpsstudentvue.fragments.ReportCardFragment;
-import com.akotnana.fcpsstudentvue.fragments.ScheduleFragment;
-import com.akotnana.fcpsstudentvue.fragments.SettingsFragment;
-import com.akotnana.fcpsstudentvue.fragments.StudentInformationFragment;
-import com.akotnana.fcpsstudentvue.utils.AccountManager;
-import com.akotnana.fcpsstudentvue.utils.BackendUtils;
-import com.akotnana.fcpsstudentvue.utils.DataStorage;
-import com.akotnana.fcpsstudentvue.utils.PreferenceManager;
-import com.akotnana.fcpsstudentvue.utils.RequestQueueSingleton;
-import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
-import com.akotnana.fcpsstudentvue.utils.gson.User;
+import com.akotnana.gradeview.R;
+import com.akotnana.gradeview.fragments.GradeBookFragment;
+import com.akotnana.gradeview.fragments.ReportCardFragment;
+import com.akotnana.gradeview.fragments.ScheduleFragment;
+import com.akotnana.gradeview.fragments.SettingsFragment;
+import com.akotnana.gradeview.fragments.StudentInformationFragment;
+import com.akotnana.gradeview.utils.AccountManager;
+import com.akotnana.gradeview.utils.BackendUtils;
+import com.akotnana.gradeview.utils.DataStorage;
+import com.akotnana.gradeview.utils.PreferenceManager;
+import com.akotnana.gradeview.utils.RequestQueueSingleton;
+import com.akotnana.gradeview.utils.VolleyCallback;
+import com.akotnana.gradeview.utils.gson.User;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -145,7 +145,7 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "clicked");
-                BackendUtils.doGetRequest("/devices/", new HashMap<String, String>() {{
+                BackendUtils.doGetRequest("/user/", new HashMap<String, String>() {{
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {

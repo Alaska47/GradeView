@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.utils.adapters;
+package com.akotnana.gradeview.utils.adapters;
 
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.CardView;
@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.akotnana.fcpsstudentvue.R;
-import com.akotnana.fcpsstudentvue.utils.ColorManager;
-import com.akotnana.fcpsstudentvue.utils.cards.ScheduleCard;
+import com.akotnana.gradeview.R;
+import com.akotnana.gradeview.utils.ColorManager;
+import com.akotnana.gradeview.utils.cards.ScheduleCard;
 
 import java.util.List;
 

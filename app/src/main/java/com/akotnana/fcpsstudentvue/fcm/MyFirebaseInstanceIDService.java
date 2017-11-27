@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.fcm;
+package com.akotnana.gradeview.fcm;
 
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.akotnana.fcpsstudentvue.utils.DataStorage;
+import com.akotnana.gradeview.utils.DataStorage;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 

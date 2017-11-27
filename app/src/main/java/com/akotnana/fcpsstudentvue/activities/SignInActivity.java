@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.activities;
+package com.akotnana.gradeview.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,12 +16,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.akotnana.fcpsstudentvue.R;
-import com.akotnana.fcpsstudentvue.utils.AccountManager;
-import com.akotnana.fcpsstudentvue.utils.BackendUtils;
-import com.akotnana.fcpsstudentvue.utils.DataStorage;
-import com.akotnana.fcpsstudentvue.utils.PreferenceManager;
-import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
+import com.akotnana.gradeview.R;
+import com.akotnana.gradeview.utils.AccountManager;
+import com.akotnana.gradeview.utils.BackendUtils;
+import com.akotnana.gradeview.utils.DataStorage;
+import com.akotnana.gradeview.utils.PreferenceManager;
+import com.akotnana.gradeview.utils.VolleyCallback;
 import com.android.volley.VolleyError;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

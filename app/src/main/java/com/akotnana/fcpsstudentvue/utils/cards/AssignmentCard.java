@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.utils.cards;
+package com.akotnana.gradeview.utils.cards;
 
 /**
  * Created by anees on 11/24/2017.

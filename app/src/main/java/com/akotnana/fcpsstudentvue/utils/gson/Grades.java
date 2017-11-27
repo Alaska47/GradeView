@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.utils.gson;
+package com.akotnana.gradeview.utils.gson;
 
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.annotations.SerializedName;

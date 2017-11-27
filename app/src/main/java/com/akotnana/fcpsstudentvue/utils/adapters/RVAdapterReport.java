@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.utils.adapters;
+package com.akotnana.gradeview.utils.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.akotnana.fcpsstudentvue.R;
-import com.akotnana.fcpsstudentvue.utils.ColorManager;
-import com.akotnana.fcpsstudentvue.utils.PreferenceManager;
-import com.akotnana.fcpsstudentvue.utils.cards.ReportCourseCard;
+import com.akotnana.gradeview.R;
+import com.akotnana.gradeview.utils.ColorManager;
+import com.akotnana.gradeview.utils.PreferenceManager;
+import com.akotnana.gradeview.utils.cards.ReportCourseCard;
 
 import java.util.List;
 

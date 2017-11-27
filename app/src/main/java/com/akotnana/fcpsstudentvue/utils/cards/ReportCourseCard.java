@@ -1,6 +1,6 @@
-package com.akotnana.fcpsstudentvue.utils.cards;
+package com.akotnana.gradeview.utils.cards;
 
-import com.akotnana.fcpsstudentvue.utils.gson.Course;
+import com.akotnana.gradeview.utils.gson.Course;
 
 /**
  * Created by anees on 11/24/2017.

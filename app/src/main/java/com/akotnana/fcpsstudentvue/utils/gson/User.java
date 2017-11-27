@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.utils.gson;
+package com.akotnana.gradeview.utils.gson;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.activities;
+package com.akotnana.gradeview.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,14 +16,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.akotnana.fcpsstudentvue.R;
-import com.akotnana.fcpsstudentvue.utils.BackendUtils;
-import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
-import com.akotnana.fcpsstudentvue.utils.adapters.RVAdapterAssignment;
-import com.akotnana.fcpsstudentvue.utils.cards.AssignmentCard;
-import com.akotnana.fcpsstudentvue.utils.gson.Assignment;
-import com.akotnana.fcpsstudentvue.utils.gson.Course;
-import com.akotnana.fcpsstudentvue.utils.gson.Quarter;
+import com.akotnana.gradeview.R;
+import com.akotnana.gradeview.utils.BackendUtils;
+import com.akotnana.gradeview.utils.VolleyCallback;
+import com.akotnana.gradeview.utils.adapters.RVAdapterAssignment;
+import com.akotnana.gradeview.utils.cards.AssignmentCard;
+import com.akotnana.gradeview.utils.gson.Assignment;
+import com.akotnana.gradeview.utils.gson.Course;
+import com.akotnana.gradeview.utils.gson.Quarter;
 import com.android.volley.VolleyError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;

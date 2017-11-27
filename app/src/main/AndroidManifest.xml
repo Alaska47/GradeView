@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.akotnana.fcpsstudentvue">
+    package="com.akotnana.gradeview">
 
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -36,7 +36,7 @@
             android:name=".activities.SignInActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:label="FCPS StudentVUE"
+            android:label="GradeView"
             android:theme="@style/AppTheme">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />

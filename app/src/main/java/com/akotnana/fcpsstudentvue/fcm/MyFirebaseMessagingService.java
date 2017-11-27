@@ -1,4 +1,4 @@
-package com.akotnana.fcpsstudentvue.fcm;
+package com.akotnana.gradeview.fcm;
 
 /**
  * Created by anees on 11/21/2017.
@@ -16,9 +16,9 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.akotnana.fcpsstudentvue.R;
-import com.akotnana.fcpsstudentvue.activities.AssignmentViewActivity;
-import com.akotnana.fcpsstudentvue.utils.gson.Course;
+import com.akotnana.gradeview.R;
+import com.akotnana.gradeview.activities.AssignmentViewActivity;
+import com.akotnana.gradeview.utils.gson.Course;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;

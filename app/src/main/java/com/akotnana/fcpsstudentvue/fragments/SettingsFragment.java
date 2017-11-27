@@ -113,10 +113,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                             progressDialog.setMessage("Loading...");
                                             progressDialog.show();
 
-                                            BackendUtils.doPostRequest("/devices/", new HashMap<String, String>() {{
-                                                put("registration_id", new DataStorage(getContext()).getData("firebaseID"));
-                                                put("active", "true");
-                                                put("type", "android");
+                                            BackendUtils.doGetRequest("/devices/", new HashMap<String, String>() {{
                                             }}, new VolleyCallback() {
                                                 @Override
                                                 public void onSuccess(String result) {
@@ -189,6 +186,35 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                         } else {
                             new PreferenceManager(getActivity()).setMyPreference("notifications", false);
                             sendNotifications.setChecked(false);
+                            final ProgressDialog progressDialog = new ProgressDialog(getActivity(),
+                                    R.style.AppTheme_Dark_Dialog);
+                            progressDialog.setIndeterminate(true);
+                            progressDialog.setCancelable(false);
+                            progressDialog.setMessage("Loading...");
+                            progressDialog.show();
+
+                            BackendUtils.doGetRequest("/devices/", new HashMap<String, String>() {{
+                            }}, new VolleyCallback() {
+                                @Override
+                                public void onSuccess(String result) {
+                                    Log.d(TAG, result);
+                                    progressDialog.dismiss();
+                                }
+
+                                @Override
+                                public void onError(VolleyError error) {
+                                    Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
+                                    progressDialog.dismiss();
+                                    if(error.networkResponse.statusCode == 401) {
+                                        Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
+                                        FirebaseAuth.getInstance().signOut();
+                                        Intent intent = new Intent(getContext(), SignInActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        getActivity().startActivity(intent);
+                                    }
+
+                                }
+                            }, getContext(), getActivity());
                         }
                     }
                     return false;

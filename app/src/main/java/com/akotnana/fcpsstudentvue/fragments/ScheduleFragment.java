@@ -113,7 +113,7 @@ public class ScheduleFragment extends Fragment {
                 Period[] periods = user.getSchedule();
                 if (periods.length < 1) {
                     if(errorSnack == null) {
-                        errorSnack = Snackbar.make((getActivity()).findViewById(android.R.id.content), "Your schedule is currently unavailable.", Snackbar.LENGTH_LONG);
+                        errorSnack = Snackbar.make((getActivity()).findViewById(android.R.id.content), "Your schedule is currently unavailable", Snackbar.LENGTH_LONG);
                         errorSnack.setAction("Dismiss", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

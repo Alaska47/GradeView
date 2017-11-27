@@ -55,7 +55,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
 
     String assignments;
     String period;
-    String fromNotification;
+    String fromNotification = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                fromNotification = null;
+                fromNotification = "";
             } else {
                 fromNotification = extras.getString("fromNotification");
             }
@@ -150,7 +150,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
         Assignment[] assignments = course.getAssignments();
         if (assignments.length < 1) {
             if(errorSnack == null) {
-                errorSnack = Snackbar.make((AssignmentViewActivity.this).findViewById(android.R.id.content), "Assignments for this course are currently unavailable.", Snackbar.LENGTH_LONG);
+                errorSnack = Snackbar.make((AssignmentViewActivity.this).findViewById(android.R.id.content), "Assignments for this course are currently unavailable", Snackbar.LENGTH_LONG);
                 errorSnack.setAction("Dismiss", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -207,7 +207,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
         // The action bar home/up action should open or close the drawer.
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (fromNotification.equals("0"))
+                if (fromNotification == null || fromNotification.equals("0"))
                     finish();
                 else {
                     Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
@@ -243,7 +243,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
                         Assignment[] assignments = quarter.getCourses()[0].getAssignments();
                         if (assignments.length < 1) {
                             if(errorSnack == null) {
-                                errorSnack = Snackbar.make((AssignmentViewActivity.this).findViewById(android.R.id.content), "Assignments for this course are currently unavailable.", Snackbar.LENGTH_LONG);
+                                errorSnack = Snackbar.make((AssignmentViewActivity.this).findViewById(android.R.id.content), "Assignments for this course are currently unavailable", Snackbar.LENGTH_LONG);
                                 errorSnack.setAction("Dismiss", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {

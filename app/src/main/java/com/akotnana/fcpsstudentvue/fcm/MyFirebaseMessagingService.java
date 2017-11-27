@@ -4,16 +4,20 @@ package com.akotnana.fcpsstudentvue.fcm;
  * Created by anees on 11/21/2017.
  */
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.akotnana.fcpsstudentvue.R;
+import com.akotnana.fcpsstudentvue.activities.AssignmentViewActivity;
 import com.akotnana.fcpsstudentvue.utils.gson.Course;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -43,18 +47,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // When the user taps on the notification they are returned to the app. Messages containing both notification
         // and data payloads are treated as notification messages. The Firebase console always sends notification
 
-        // Check if message contains a notification payload.
-        String data = "";
+        String title = "";
+        String body = "";
+        String extra = "";
         if(remoteMessage.getData() != null) {
             Map<String, String> payload = remoteMessage.getData();
-            data = payload.get("data");
-            Log.d(TAG, data);
+            title = payload.get("title");
+            body = payload.get("body");
+            extra = payload.get("extra");
+            Log.d(TAG, "title: " + title);
+            Log.d(TAG, "message: " + body);
+            Log.d(TAG, "extra: " + extra);
+            sendNotification(new String[]{title, body, extra});
         }
 
+        /*
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(new String[]{remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(), data});
+            sendNotification(new String[]{remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody()});
         }
+        */
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -67,9 +79,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String[] messageBody) {
-        //TODO: change from null to something actual
-        Intent intent = new Intent(this, null);
 
+        Intent intent = new Intent(this, AssignmentViewActivity.class);
         Gson gson = null;
         try {
             GsonBuilder gsonBuilder = new GsonBuilder();
@@ -84,17 +95,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("assignments", messageBody[2]);
         intent.putExtra("fromNotification", "1");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, (int)(Math.random()*100) /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+        Notification notification = new Notification();
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
                         .setContentTitle(messageBody[0])
                         .setContentText(messageBody[1])
+                        .setSmallIcon(R.drawable.ic_stat_logo)
+                        .setPriority(NotificationManager.IMPORTANCE_MAX)
                         .setAutoCancel(true)
+                        .setDefaults(notification.defaults)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
+
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

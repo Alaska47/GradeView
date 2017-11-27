@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,17 +32,25 @@ import com.akotnana.fcpsstudentvue.fragments.ReportCardFragment;
 import com.akotnana.fcpsstudentvue.fragments.ScheduleFragment;
 import com.akotnana.fcpsstudentvue.fragments.SettingsFragment;
 import com.akotnana.fcpsstudentvue.fragments.StudentInformationFragment;
+import com.akotnana.fcpsstudentvue.utils.AccountManager;
 import com.akotnana.fcpsstudentvue.utils.BackendUtils;
 import com.akotnana.fcpsstudentvue.utils.DataStorage;
 import com.akotnana.fcpsstudentvue.utils.PreferenceManager;
+import com.akotnana.fcpsstudentvue.utils.RequestQueueSingleton;
 import com.akotnana.fcpsstudentvue.utils.VolleyCallback;
 import com.akotnana.fcpsstudentvue.utils.gson.User;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -61,6 +70,8 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
+        checkForNotification(savedInstanceState);
 
         String type = "";
         if (savedInstanceState == null) {
@@ -134,7 +145,7 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "clicked");
-                BackendUtils.doGetRequest("/user/", new HashMap<String, String>() {{
+                BackendUtils.doGetRequest("/devices/", new HashMap<String, String>() {{
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
@@ -199,6 +210,54 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
         }, getApplicationContext(), NavigationActivity.this);
     }
 
+    public void signOut() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://sis.okulkarni.me/user/",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "Signed out!");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error == null || error.networkResponse == null) {
+                            return;
+                        }
+                        String body = "";
+                        //get status code here
+                        final String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //get response body and parse with appropriate encoding
+                        try {
+                            body = new String(error.networkResponse.data,"UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            // exception
+                        }
+
+                        Log.e(TAG, body + "\n");
+                    }
+                }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                String[] creds = new AccountManager(getApplicationContext()).retrieveCredentials();
+                String credentials = creds[0] + ":" + creds[1];
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                return headers;
+            }
+
+        };
+        RequestQueueSingleton.getInstance(getApplicationContext())
+                .getRequestQueue().add(stringRequest);
+    }
+
     public Bitmap bitmapSizeByScale(Bitmap bitmapIn, float scall_zero_to_one_f) {
 
         Bitmap bitmapOut = Bitmap.createScaledBitmap(bitmapIn,
@@ -206,6 +265,66 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
                 Math.round(bitmapIn.getHeight() * scall_zero_to_one_f), false);
 
         return bitmapOut;
+    }
+
+    public void checkForNotification(Bundle savedInstanceState) {
+        String fromNotification = "";
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                fromNotification = null;
+            } else {
+                fromNotification = extras.getString("fromNotification");
+            }
+        } else {
+            fromNotification = (String) savedInstanceState.getSerializable("fromNotification");
+        }
+        Log.d(TAG, "fromNotification: " + fromNotification);
+        if(fromNotification != null && fromNotification.equals("1")) {
+            String currentQuarter = "";
+            if (savedInstanceState == null) {
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    currentQuarter = null;
+                } else {
+                    currentQuarter = extras.getString("currentQuarter");
+                }
+            } else {
+                currentQuarter = (String) savedInstanceState.getSerializable("currentQuarter");
+            }
+            String period = "";
+            if (savedInstanceState == null) {
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    period = null;
+                } else {
+                    period = extras.getString("period");
+                }
+            } else {
+                period = (String) savedInstanceState.getSerializable("period");
+            }
+            String assignments = "";
+            if (savedInstanceState == null) {
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    assignments = null;
+                } else {
+                    assignments = extras.getString("assignments");
+                }
+            } else {
+                assignments = (String) savedInstanceState.getSerializable("assignments");
+            }
+            Log.d(TAG, "assignments: " + assignments);
+            Intent intent = new Intent(this, AssignmentViewActivity.class);
+            intent.putExtra("currentQuarter", currentQuarter);
+            intent.putExtra("period", period);
+            intent.putExtra("assignments", assignments);
+            intent.putExtra("fromNotification", "1");
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            overridePendingTransition(0,0);
+            finish();
+        }
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -242,6 +361,7 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
             case R.id.sign_out:
                 mDrawer.closeDrawers();
                 FirebaseAuth.getInstance().signOut();
+                signOut();
                 Toast.makeText(this, "Signing out...", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

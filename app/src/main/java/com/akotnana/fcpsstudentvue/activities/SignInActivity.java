@@ -48,6 +48,8 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        checkForNotification(savedInstanceState);
+
         mAuth = FirebaseAuth.getInstance();
 
         logo = (ImageView) findViewById(R.id.logo_view);
@@ -87,7 +89,7 @@ public class SignInActivity extends AppCompatActivity {
                                             public void onSuccess(String result) {
                                                 progressDialog.dismiss();
                                                 Log.d(TAG, result);
-                                                Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+                                                Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
                                                 intent.putExtra("grades", result);
                                                 startActivity(intent);
                                                 finish();
@@ -128,10 +130,76 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+    public void checkForNotification(Bundle savedInstanceState) {
+        String fromNotification = "";
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                fromNotification = null;
+            } else {
+                fromNotification = extras.getString("fromNotification");
+            }
+        } else {
+            fromNotification = (String) savedInstanceState.getSerializable("fromNotification");
+        }
+        Log.d(TAG, "fromNotification: " + fromNotification);
+        if(fromNotification != null && fromNotification.equals("1")) {
+            String currentQuarter = "";
+            if (savedInstanceState == null) {
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    currentQuarter = null;
+                } else {
+                    currentQuarter = extras.getString("currentQuarter");
+                }
+            } else {
+                currentQuarter = (String) savedInstanceState.getSerializable("currentQuarter");
+            }
+            String period = "";
+            if (savedInstanceState == null) {
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    period = null;
+                } else {
+                    period = extras.getString("period");
+                }
+            } else {
+                period = (String) savedInstanceState.getSerializable("period");
+            }
+            String assignments = "";
+            if (savedInstanceState == null) {
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    assignments = null;
+                } else {
+                    assignments = extras.getString("assignments");
+                }
+            } else {
+                assignments = (String) savedInstanceState.getSerializable("assignments");
+            }
+            Log.d(TAG, "assignments: " + assignments);
+            Intent intent = new Intent(this, AssignmentViewActivity.class);
+            intent.putExtra("currentQuarter", currentQuarter);
+            intent.putExtra("period", period);
+            intent.putExtra("assignments", assignments);
+            intent.putExtra("fromNotification", "1");
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            overridePendingTransition(0,0);
+            finish();
+        }
+    }
+
     public void updateUser() {
-        Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
-        startActivity(intent);
-        finish();
+        if(new DataStorage(getApplicationContext()).getData("finishedTutorial").equals("true")) {
+            Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 }

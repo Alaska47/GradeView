@@ -10,6 +10,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -173,18 +174,30 @@ public class BackendUtils {
             }
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
+
+                String hello = "";
+                for (Map.Entry<String, String> entry : parameters.entrySet()) {
+                    hello += entry.getKey() + "=" + entry.getValue() + "&";
+                }
+                Log.d(TAG, "original parameter: " +  hello);
                 Map<String, String> params = parameters;
+
                 if(new PreferenceManager(activity).getMyPreference("notifications")){
                     params.put("save_password", "true");
+                    String hello1 = "";
+                    for (Map.Entry<String, String> entry : params.entrySet()) {
+                        hello1 += entry.getKey() + "=" + entry.getValue() + "&";
+                    }
+                    Log.d(TAG, "just put save_password in the params: " + hello1);
                 }
                 return params;
             }
 
-            @Override
+            /*@Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
-            }
+            }*/
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

@@ -110,11 +110,15 @@ public class RVAdapterReport extends RecyclerView.Adapter<RVAdapterReport.Report
             reportViewHolder.semesterReport.setTextSize(16f);
         }
 
-        //reportViewHolder.semesterReport.setTextColor(ColorManager.getColor(scoreToLetterGrade(Double.parseDouble(reportCourseCards.get(i).semesterReportPercentage))));
-
-        GradientDrawable sd1 = (GradientDrawable) reportViewHolder.semesterReport.getBackground().mutate();
-        sd1.setColor(ColorManager.getColor(reportCourseCards.get(i).semesterReport));
-        sd1.invalidateSelf();
+        if(new PreferenceManager(a).getMyPreference("color")){
+            GradientDrawable sd = (GradientDrawable) reportViewHolder.semesterReport.getBackground().mutate();
+            sd.setColor(ColorManager.getColor(reportCourseCards.get(i).semesterReport));
+            sd.invalidateSelf();
+        } else {
+            GradientDrawable sd = (GradientDrawable) reportViewHolder.semesterReport.getBackground().mutate();
+            sd.setColor(ColorManager.getColor("N/A"));
+            sd.invalidateSelf();
+        }
     }
 
     public String scoreToLetterGrade(double score) {

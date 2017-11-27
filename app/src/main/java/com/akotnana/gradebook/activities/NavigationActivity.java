@@ -1,4 +1,4 @@
-package com.akotnana.gradeview.activities;
+package com.akotnana.gradebook.activities;
 
 /**
  * Created by anees on 11/23/2017.

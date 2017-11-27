@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FCPS StudentVUE.iml" filepath="$PROJECT_DIR$/FCPS StudentVUE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GradeView.iml" filepath="$PROJECT_DIR$/GradeView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

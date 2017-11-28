@@ -200,7 +200,7 @@ public class GradeBookQFragment extends Fragment {
                         }
                         if(courses.length < 1) {
                             Log.i(TAG, "Snackbar called!");
-                            errorSnack = Snackbar.make(((Activity) getContext()).findViewById(android.R.id.content), "Grades for this quarter are currently unavailable", Snackbar.LENGTH_LONG);
+                            errorSnack = Snackbar.make(((Activity) getContext()).findViewById(android.R.id.content), "There are currently no grades for this quarter", Snackbar.LENGTH_LONG);
                             errorSnack.setAction("Dismiss", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

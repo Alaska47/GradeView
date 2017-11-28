@@ -150,7 +150,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
         Assignment[] assignments = course.getAssignments();
         if (assignments.length < 1) {
             if(errorSnack == null) {
-                errorSnack = Snackbar.make((AssignmentViewActivity.this).findViewById(android.R.id.content), "Assignments for this course are currently unavailable", Snackbar.LENGTH_LONG);
+                errorSnack = Snackbar.make((AssignmentViewActivity.this).findViewById(android.R.id.content), "There are currently no grades for this course", Snackbar.LENGTH_LONG);
                 errorSnack.setAction("Dismiss", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -1,4 +1,4 @@
-package com.akotnana.gradebook.activities;
+package com.akotnana.gradeview.activities;
 
 /**
  * Created by anees on 11/23/2017.
@@ -35,7 +35,6 @@ import com.akotnana.gradeview.fragments.StudentInformationFragment;
 import com.akotnana.gradeview.utils.AccountManager;
 import com.akotnana.gradeview.utils.BackendUtils;
 import com.akotnana.gradeview.utils.DataStorage;
-import com.akotnana.gradeview.utils.PreferenceManager;
 import com.akotnana.gradeview.utils.RequestQueueSingleton;
 import com.akotnana.gradeview.utils.VolleyCallback;
 import com.akotnana.gradeview.utils.gson.User;

@@ -239,7 +239,7 @@ public class ReportCardQFragment extends Fragment {
             */
             if(reportsCards != null && reportsCards.size() < 1) {
                 Log.i(TAG, "Snackbar called!");
-                errorSnack = Snackbar.make(((Activity) getContext()).findViewById(android.R.id.content), "The report card for this quarter is currently unavailable", Snackbar.LENGTH_LONG);
+                errorSnack = Snackbar.make(((Activity) getContext()).findViewById(android.R.id.content), "There is currently no report card for this quarter", Snackbar.LENGTH_LONG);
                 errorSnack.setAction("Dismiss", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -164,6 +164,14 @@ public class IntroActivity extends MaterialIntroActivity {
     }
 
     @Override
+    public void onPause() {
+        if(!isFinishing()) {
+            FirebaseAuth.getInstance().signOut();
+        }
+        super.onPause();
+    }
+
+    @Override
     public void onFinish() {
         new DataStorage(getApplicationContext()).storeData("finishedTutorial", "true", false);
         Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);

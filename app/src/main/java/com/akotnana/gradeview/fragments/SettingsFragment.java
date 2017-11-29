@@ -33,6 +33,7 @@ import com.akotnana.gradeview.utils.gson.User;
 import com.android.volley.VolleyError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+import com.akotnana.gradeview.BuildConfig;
 import com.google.gson.GsonBuilder;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompatDividers;
 
@@ -66,6 +67,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
 
             Preference textPreference = (Preference) getPreferenceManager().findPreference("version");
             textPreference.setSummary("Logged in as: " + new DataStorage(getContext()).getData("userFullName"));
+            textPreference.setTitle("Version " + BuildConfig.VERSION_NAME);
 
             colorCodeGrades = (CheckBoxPreference)  getPreferenceManager().findPreference("color");
             colorCodeGrades.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

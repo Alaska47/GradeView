@@ -13,11 +13,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akotnana.gradeview.R;
 import com.akotnana.gradeview.utils.BackendUtils;
+import com.akotnana.gradeview.utils.OnSwipeTouchListener;
 import com.akotnana.gradeview.utils.VolleyCallback;
 import com.akotnana.gradeview.utils.adapters.RVAdapterAssignment;
 import com.akotnana.gradeview.utils.cards.AssignmentCard;
@@ -68,6 +71,70 @@ public class AssignmentViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        LinearLayout rootLayout = (LinearLayout) findViewById(R.id.root_layout_id);
+        rootLayout.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeDown() {
+
+            }
+
+            @Override
+            public void onSwipeLeft() {
+
+            }
+
+            @Override
+            public void onSwipeUp() {
+
+            }
+
+            @Override
+            public void onSwipeRight() {
+                if (fromNotification == null || fromNotification.equals("0")) {
+                    finish();
+                    overridePendingTransition(R.xml.left_in, R.xml.right_out);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    overridePendingTransition(R.xml.left_in, R.xml.right_out);
+                    finish();
+                }
+            }
+        });
+
+        FrameLayout flLayout = (FrameLayout) findViewById(R.id.flContent);
+        flLayout.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeDown() {
+
+            }
+
+            @Override
+            public void onSwipeLeft() {
+
+            }
+
+            @Override
+            public void onSwipeUp() {
+
+            }
+
+            @Override
+            public void onSwipeRight() {
+                if (fromNotification == null || fromNotification.equals("0")) {
+                    finish();
+                    overridePendingTransition(R.xml.left_in, R.xml.right_out);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    overridePendingTransition(R.xml.left_in, R.xml.right_out);
+                    finish();
+                }
+            }
+        });
 
         String currentQuarter = "";
         if (savedInstanceState == null) {
@@ -207,13 +274,14 @@ public class AssignmentViewActivity extends AppCompatActivity {
         // The action bar home/up action should open or close the drawer.
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (fromNotification == null || fromNotification.equals("0"))
+                if (fromNotification == null || fromNotification.equals("0")) {
                     finish();
-                else {
+                    overridePendingTransition(R.xml.left_in, R.xml.right_out);
+                } else {
                     Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
-                    overridePendingTransition(0, 0);
+                overridePendingTransition(R.xml.left_in, R.xml.right_out);
                     finish();
                 }
                 finish();

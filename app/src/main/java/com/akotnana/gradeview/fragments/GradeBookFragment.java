@@ -43,6 +43,7 @@ public class GradeBookFragment extends Fragment {
     ViewPager viewPager;
     TabLayout tabLayout;
     ViewPagerAdapter adapter;
+    View v;
 
     public GradeBookFragment() {
         // Required empty public constructor
@@ -61,7 +62,7 @@ public class GradeBookFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_grade_book, container, false);
+        v = inflater.inflate(R.layout.fragment_grade_book, container, false);
 
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         viewPager = (ViewPager) v.findViewById(R.id.pager);
@@ -243,8 +244,10 @@ public class GradeBookFragment extends Fragment {
             // Respond to the action bar's Up/Home button
             case R.id.refresh:
                 viewPager.setAdapter(null);
+                viewPager.setOffscreenPageLimit(2);
                 adapter = new ViewPagerAdapter(getContext(), getChildFragmentManager());
                 viewPager.setSaveFromParentEnabled(false);
+
                 final ProgressDialog progressDialog = new ProgressDialog(getActivity(),
                         R.style.AppTheme_Dark_Dialog);
                 progressDialog.setIndeterminate(true);
@@ -253,9 +256,11 @@ public class GradeBookFragment extends Fragment {
                 progressDialog.show();
                 BackendUtils.doGetRequest("/grades/", new HashMap<String, String>() {{
                     put("force", "true");
+                    put("format", "json");
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
+                        Log.d(TAG, result);
                         new DataStorage(getContext()).storeData("GradeBook", result, false);
                         try {
                             int goToPage = -1;
@@ -307,7 +312,8 @@ public class GradeBookFragment extends Fragment {
 
                             tabLayout.setupWithViewPager(viewPager);
 
-                            progressDialog.dismiss();
+                            if(v.isShown())
+                                progressDialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

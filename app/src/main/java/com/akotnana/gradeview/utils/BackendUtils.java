@@ -6,6 +6,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -39,10 +40,13 @@ public class BackendUtils {
         }
         request = request.substring(0, request.length()-1);
 
+        Log.d(TAG, request);
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, request,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d(TAG, "got a response in return");
                         callback.onSuccess(response);
                     }
                 },
@@ -83,6 +87,12 @@ public class BackendUtils {
             }
 
         };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10*1000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         RequestQueueSingleton.getInstance(context)
                 .getRequestQueue().add(stringRequest);
     }
@@ -140,6 +150,12 @@ public class BackendUtils {
             }
 
         };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10*1000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         RequestQueueSingleton.getInstance(context)
                 .getRequestQueue().add(stringRequest);
     }
@@ -211,6 +227,12 @@ public class BackendUtils {
             }
 
         };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10*1000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         RequestQueueSingleton.getInstance(context)
                 .getRequestQueue().add(stringRequest);
     }

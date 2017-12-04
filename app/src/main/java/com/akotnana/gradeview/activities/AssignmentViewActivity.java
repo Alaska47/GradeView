@@ -184,10 +184,24 @@ public class AssignmentViewActivity extends AppCompatActivity {
             assignments = (String) savedInstanceState.getSerializable("assignments");
         }
 
+        if(assignments == null) {
+            Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+            finish();
+        }
+
         try {
             toolbarTitle.setText(new JSONObject(assignments).getString("name").split(" \\(")[0] + " - " + currentQuarter);
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+            finish();
         }
 
         rv = (RecyclerView) findViewById(R.id.rv);
@@ -344,13 +358,25 @@ public class AssignmentViewActivity extends AppCompatActivity {
                                 assignmentCards.add(new AssignmentCard(assignment.getAssignmentName(), assignment.getScore(), assignment.getPoints(), "N/A"));
                             }
                         }
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                         initializeAdapter();
                     }
 
                     @Override
                     public void onError(VolleyError error) {
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                             FirebaseAuth.getInstance().signOut();

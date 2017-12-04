@@ -133,8 +133,13 @@ public class GradeBookFragment extends Fragment {
 
                         tabLayout.setupWithViewPager(viewPager);
 
-                        if(v.isShown())
-                            progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (v.isShown() || getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch(NullPointerException e) {
+                            //hello
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -142,7 +147,13 @@ public class GradeBookFragment extends Fragment {
 
                 @Override
                 public void onError(VolleyError error) {
-                    progressDialog.dismiss();
+                    progressDialog.setCancelable(true);
+                    try {
+                        if (v.isShown() || getActivity().getWindow().getDecorView().isShown())
+                            progressDialog.dismiss();
+                    } catch (NullPointerException e) {
+
+                    }
                     if(error.networkResponse.statusCode == 401) {
                         Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                         FirebaseAuth.getInstance().signOut();
@@ -312,8 +323,13 @@ public class GradeBookFragment extends Fragment {
 
                             tabLayout.setupWithViewPager(viewPager);
 
-                            if(v.isShown())
-                                progressDialog.dismiss();
+                            progressDialog.setCancelable(true);
+                            try {
+                                if (v.isShown() || getActivity().getWindow().getDecorView().isShown())
+                                    progressDialog.dismiss();
+                            } catch (NullPointerException e) {
+
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -321,7 +337,13 @@ public class GradeBookFragment extends Fragment {
 
                     @Override
                     public void onError(VolleyError error) {
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (v.isShown() || getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                             FirebaseAuth.getInstance().signOut();

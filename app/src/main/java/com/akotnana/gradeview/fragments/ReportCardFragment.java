@@ -74,6 +74,8 @@ public class ReportCardFragment extends Fragment {
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
                 BackendUtils.doGetRequest("/report_card/", new HashMap<String, String>() {{
+                    put("force", "true");
+                    put("format", "json");
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
@@ -105,12 +107,24 @@ public class ReportCardFragment extends Fragment {
                         viewPager.setCurrentItem(goToPage);
 
                         tabLayout.setupWithViewPager(viewPager);
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                     }
 
                     @Override
                     public void onError(VolleyError error) {
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                             FirebaseAuth.getInstance().signOut();
@@ -179,12 +193,24 @@ public class ReportCardFragment extends Fragment {
                 viewPager.setCurrentItem(goToPage);
 
                 tabLayout.setupWithViewPager(viewPager);
-                progressDialog.dismiss();
+                progressDialog.setCancelable(true);
+                try {
+                    if (getActivity().getWindow().getDecorView().isShown())
+                        progressDialog.dismiss();
+                } catch (NullPointerException e) {
+
+                }
             }
 
             @Override
             public void onError(VolleyError error) {
-                progressDialog.dismiss();
+                progressDialog.setCancelable(true);
+                try {
+                    if (getActivity().getWindow().getDecorView().isShown())
+                        progressDialog.dismiss();
+                } catch (NullPointerException e) {
+
+                }
                 if(error.networkResponse.statusCode == 401) {
                     Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                     FirebaseAuth.getInstance().signOut();

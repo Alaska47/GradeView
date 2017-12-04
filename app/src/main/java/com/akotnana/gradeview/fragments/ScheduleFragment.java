@@ -141,13 +141,25 @@ public class ScheduleFragment extends Fragment {
                 for (Period period : periods) {
                     scheduleCards.add(new ScheduleCard(period.getPeriod(), period.getPeriodName(), period.getTeacher(), period.getPeriodLocation()));
                 }
-                progressDialog.dismiss();
+                progressDialog.setCancelable(true);
+                try {
+                    if (getActivity().getWindow().getDecorView().isShown())
+                        progressDialog.dismiss();
+                } catch (NullPointerException e) {
+
+                }
                 initializeAdapter();
             }
 
             @Override
             public void onError(VolleyError error) {
-                progressDialog.dismiss();
+                progressDialog.setCancelable(true);
+                try {
+                    if (getActivity().getWindow().getDecorView().isShown())
+                        progressDialog.dismiss();
+                } catch (NullPointerException e) {
+
+                }
                 if(error.networkResponse.statusCode == 401) {
                     Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                     FirebaseAuth.getInstance().signOut();

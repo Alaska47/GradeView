@@ -110,7 +110,13 @@ public class SignInActivity extends AppCompatActivity {
                                         }}, new VolleyCallback() {
                                             @Override
                                             public void onSuccess(String result) {
-                                                progressDialog.dismiss();
+                                                progressDialog.setCancelable(true);
+                                                try {
+                                                    if (getWindow().getDecorView().isShown())
+                                                        progressDialog.dismiss();
+                                                } catch (NullPointerException e) {
+
+                                                }
                                                 Log.d(TAG, result);
                                                 Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
                                                 intent.putExtra("grades", result);
@@ -124,7 +130,13 @@ public class SignInActivity extends AppCompatActivity {
                                                 if(error.networkResponse.statusCode == 401) {
                                                     Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                                                 }
-                                                progressDialog.dismiss();
+                                                progressDialog.setCancelable(true);
+                                                try {
+                                                    if (getWindow().getDecorView().isShown())
+                                                        progressDialog.dismiss();
+                                                } catch (NullPointerException e) {
+
+                                                }
                                             }
                                         }, getApplicationContext(), SignInActivity.this);
                                     } else {

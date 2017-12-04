@@ -69,7 +69,13 @@ public class StudentInformationFragment extends Fragment {
                 }}, new VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                         //Log.d(TAG, result);
                         Gson gson = null;
                         try {
@@ -88,7 +94,13 @@ public class StudentInformationFragment extends Fragment {
 
                     @Override
                     public void onError(VolleyError error) {
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                             FirebaseAuth.getInstance().signOut();
@@ -128,7 +140,13 @@ public class StudentInformationFragment extends Fragment {
         }}, new VolleyCallback() {
             @Override
             public void onSuccess(String result) {
-                progressDialog.dismiss();
+                progressDialog.setCancelable(true);
+                try {
+                    if (getActivity().getWindow().getDecorView().isShown())
+                        progressDialog.dismiss();
+                } catch (NullPointerException e) {
+
+                }
                 //Log.d(TAG, result);
                 Gson gson = null;
                 try {
@@ -147,7 +165,13 @@ public class StudentInformationFragment extends Fragment {
 
             @Override
             public void onError(VolleyError error) {
-                progressDialog.dismiss();
+                progressDialog.setCancelable(true);
+                try {
+                    if (getActivity().getWindow().getDecorView().isShown())
+                        progressDialog.dismiss();
+                } catch (NullPointerException e) {
+
+                }
                 if(error.networkResponse.statusCode == 401) {
                     Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                     FirebaseAuth.getInstance().signOut();

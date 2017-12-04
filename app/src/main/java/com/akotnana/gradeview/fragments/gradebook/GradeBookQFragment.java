@@ -223,13 +223,25 @@ public class GradeBookQFragment extends Fragment {
                             });
                             errorSnack.show();
                         }
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                         initializeAdapter();
                     }
 
                     @Override
                     public void onError(VolleyError error) {
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                         Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();

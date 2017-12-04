@@ -123,13 +123,25 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                                 @Override
                                                 public void onSuccess(String result) {
                                                     Log.d(TAG, result);
-                                                    progressDialog.dismiss();
+                                                    progressDialog.setCancelable(true);
+                                                    try {
+                                                        if (getActivity().getWindow().getDecorView().isShown())
+                                                            progressDialog.dismiss();
+                                                    } catch (NullPointerException e) {
+
+                                                    }
                                                 }
 
                                                 @Override
                                                 public void onError(VolleyError error) {
                                                     Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
-                                                    progressDialog.dismiss();
+                                                    progressDialog.setCancelable(true);
+                                                    try {
+                                                        if (getActivity().getWindow().getDecorView().isShown())
+                                                            progressDialog.dismiss();
+                                                    } catch (NullPointerException e) {
+
+                                                    }
                                                     if(error.networkResponse.statusCode == 401) {
                                                         Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                                                         FirebaseAuth.getInstance().signOut();
@@ -166,12 +178,24 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                                 @Override
                                                 public void onSuccess(String result) {
                                                     Log.d(TAG, result);
-                                                    progressDialog.dismiss();
+                                                    progressDialog.setCancelable(true);
+                                                    try {
+                                                        if (getActivity().getWindow().getDecorView().isShown())
+                                                            progressDialog.dismiss();
+                                                    } catch (NullPointerException e) {
+
+                                                    }
                                                 }
 
                                                 @Override
                                                 public void onError(VolleyError error) {
-                                                    progressDialog.dismiss();
+                                                    progressDialog.setCancelable(true);
+                                                    try {
+                                                        if (getActivity().getWindow().getDecorView().isShown())
+                                                            progressDialog.dismiss();
+                                                    } catch(NullPointerException e) {
+
+                                                    }
                                                     Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
                                                     if(error.networkResponse.statusCode == 401) {
                                                         Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
@@ -207,13 +231,25 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                                 @Override
                                 public void onSuccess(String result) {
                                     Log.d(TAG, result);
-                                    progressDialog.dismiss();
+                                    progressDialog.setCancelable(true);
+                                    try {
+                                        if (getActivity().getWindow().getDecorView().isShown())
+                                            progressDialog.dismiss();
+                                    } catch (NullPointerException e) {
+
+                                    }
                                 }
 
                                 @Override
                                 public void onError(VolleyError error) {
                                     Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
-                                    progressDialog.dismiss();
+                                    progressDialog.setCancelable(true);
+                                    try {
+                                        if (getActivity().getWindow().getDecorView().isShown())
+                                            progressDialog.dismiss();
+                                    } catch (NullPointerException e) {
+
+                                    }
                                     if(error.networkResponse.statusCode == 401) {
                                         Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                                         FirebaseAuth.getInstance().signOut();
@@ -262,13 +298,25 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers   {
                     @Override
                     public void onSuccess(String result) {
                         Log.d(TAG, result);
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                     }
 
                     @Override
                     public void onError(VolleyError error) {
                         Log.d(TAG, String.valueOf(error.networkResponse.statusCode));
-                        progressDialog.dismiss();
+                        progressDialog.setCancelable(true);
+                        try {
+                            if (getActivity().getWindow().getDecorView().isShown())
+                                progressDialog.dismiss();
+                        } catch (NullPointerException e) {
+
+                        }
                         if(error.networkResponse.statusCode == 401) {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();
                             FirebaseAuth.getInstance().signOut();

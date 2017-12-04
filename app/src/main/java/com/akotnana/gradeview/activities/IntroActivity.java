@@ -109,7 +109,7 @@ public class IntroActivity extends MaterialIntroActivity {
                         .build(),
                 new MessageButtonBehaviour(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
                         if(new PreferenceManager(IntroActivity.this).getMyPreference("notifications") != true) {
                             new PreferenceManager(IntroActivity.this).setMyPreference("notifications", true);
                             new DataStorage(getApplicationContext()).storeData("notificationsFirstValue", "true", true);
@@ -129,13 +129,25 @@ public class IntroActivity extends MaterialIntroActivity {
                                 @Override
                                 public void onSuccess(String result) {
                                     Log.d(TAG, result);
-                                    progressDialog.dismiss();
+                                    progressDialog.setCancelable(true);
+                                    try {
+                                        if (v.isShown() || getWindow().getDecorView().isShown())
+                                            progressDialog.dismiss();
+                                    } catch (NullPointerException e) {
+
+                                    }
                                     
                                 }
 
                                 @Override
                                 public void onError(VolleyError notif) {
-                                    progressDialog.dismiss();
+                                    progressDialog.setCancelable(true);
+                                    try {
+                                        if (v.isShown() || getWindow().getDecorView().isShown())
+                                            progressDialog.dismiss();
+                                    } catch (NullPointerException e) {
+
+                                    }
                                     Log.d(TAG, String.valueOf(notif.networkResponse.statusCode));
                                     if(notif.networkResponse.statusCode == 401) {
                                         Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_LONG).show();

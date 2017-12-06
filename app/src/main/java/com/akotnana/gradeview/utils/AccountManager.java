@@ -34,6 +34,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import android.util.Base64;
+import android.util.Log;
 
 /**
  * Created by anees on 11/21/2017.
@@ -61,13 +62,14 @@ public class AccountManager {
 
     public void saveCredentials(String username, String password) {
         String key1 = "";
-        if (new DataStorage(context).getData("createdKey") != "1") {
+        if (new DataStorage(context).getData("key").equals("") || !new DataStorage(context).getData("createdKey").equals("1")) {
             key1 = UUID.randomUUID().toString().replace("-", "").substring(0, 32);
             new DataStorage(context).storeData("key", key1, true);
             new DataStorage(context).storeData("createdKey", "1", true);
         } else {
             key1 = new DataStorage(context).getData("key");
         }
+        Log.d("HELLO", "key: " + key1);
         Key key = null;
         try {
             key = generateKey(key1);
@@ -105,38 +107,42 @@ public class AccountManager {
     }
 
     public String[] retrieveCredentials() {
-        String key1 = new DataStorage(context).getData("key");
-        String encryptedPassword = new DataStorage(context).getData("password");
-        String username = new DataStorage(context).getData("username");
-        Key key = null;
-        try {
-            key = generateKey(key1);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (new DataStorage(context).getData("createdKey").equals("1")) {
+
+            String key1 = new DataStorage(context).getData("key");
+            String encryptedPassword = new DataStorage(context).getData("password");
+            String username = new DataStorage(context).getData("username");
+            Key key = null;
+            try {
+                key = generateKey(key1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Cipher c1 = null;
+            try {
+                c1 = Cipher.getInstance("AES");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            }
+            try {
+                c1.init(Cipher.DECRYPT_MODE, key);
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            }
+            byte[] decordedValue = Base64.decode(encryptedPassword.getBytes(), Base64.DEFAULT);
+            byte[] decValue = new byte[0];
+            try {
+                decValue = c1.doFinal(decordedValue);
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            }
+            String password = new String(decValue);
+            return new String[]{username, password};
         }
-        Cipher c1 = null;
-        try {
-            c1 = Cipher.getInstance("AES");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        }
-        try {
-            c1.init(Cipher.DECRYPT_MODE, key);
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        }
-        byte[] decordedValue = Base64.decode(encryptedPassword.getBytes(), Base64.DEFAULT);
-        byte[] decValue = new byte[0];
-        try {
-            decValue = c1.doFinal(decordedValue);
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        }
-        String password = new String(decValue);
-        return new String[]{username,password};
+        return new String[]{"",""};
     }
 }

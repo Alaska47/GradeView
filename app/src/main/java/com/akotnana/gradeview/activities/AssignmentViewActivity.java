@@ -28,6 +28,7 @@ import com.akotnana.gradeview.utils.gson.Assignment;
 import com.akotnana.gradeview.utils.gson.Course;
 import com.akotnana.gradeview.utils.gson.Quarter;
 import com.android.volley.VolleyError;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -184,7 +185,18 @@ public class AssignmentViewActivity extends AppCompatActivity {
             assignments = (String) savedInstanceState.getSerializable("assignments");
         }
 
-        if(assignments == null) {
+        try {
+            Crashlytics.setString("assignments", String.valueOf((Object) assignments));
+            Crashlytics.setString("period", String.valueOf((Object) period));
+            Crashlytics.setString("currentQuarter", String.valueOf((Object) currentQuarter));
+            Crashlytics.setString("fromNotification", String.valueOf((Object) fromNotification));
+        } catch (Exception e) {
+            Crashlytics.setString("error", "couldnt store");
+            Crashlytics.logException(e);
+        }
+
+
+        if(assignments == null || assignments.length() < 5) {
             Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
@@ -207,9 +219,16 @@ public class AssignmentViewActivity extends AppCompatActivity {
         rv = (RecyclerView) findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(llm);
-
-        initializeAdapter();
-        initializeData();
+        try {
+            initializeAdapter();
+            initializeData();
+        } catch (NullPointerException e) {
+            Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+            finish();
+        }
 
     }
 
@@ -229,7 +248,7 @@ public class AssignmentViewActivity extends AppCompatActivity {
         }
         Course course = gson.fromJson(assignments, Course.class);
         Assignment[] assignments = course.getAssignments();
-        if (assignments.length < 1) {
+        if (assignments == null || assignments.length < 1) {
             if(errorSnack == null) {
                 errorSnack = Snackbar.make((AssignmentViewActivity.this).findViewById(android.R.id.content), "There are currently no grades for this course", Snackbar.LENGTH_LONG);
                 errorSnack.setAction("Dismiss", new View.OnClickListener() {

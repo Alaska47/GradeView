@@ -35,10 +35,12 @@ import com.akotnana.gradeview.fragments.StudentInformationFragment;
 import com.akotnana.gradeview.utils.AccountManager;
 import com.akotnana.gradeview.utils.BackendUtils;
 import com.akotnana.gradeview.utils.DataStorage;
+import com.akotnana.gradeview.utils.PreferenceManager;
 import com.akotnana.gradeview.utils.RequestQueueSingleton;
 import com.akotnana.gradeview.utils.VolleyCallback;
 import com.akotnana.gradeview.utils.gson.User;
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -120,6 +122,77 @@ public class NavigationActivity extends AppCompatActivity implements GradeBookFr
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
         toolbarTitle.setText("Grade Book");
+
+        final HashMap<String, String> parameters = new HashMap<String, String>() {{
+            put("registration_id", new DataStorage(getApplicationContext()).getData("firebaseID"));
+            put("active", "true");
+            put("type", "android");
+        }};
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                "https://sis.okulkarni.me" + "/devices/",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "sent to server successfully");
+                        Log.d(TAG, response);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error == null || error.networkResponse == null) {
+                    return;
+                }
+                String body = "";
+                //get status code here
+                final String statusCode = String.valueOf(error.networkResponse.statusCode);
+                //get response body and parse with appropriate encoding
+                try {
+                    body = new String(error.networkResponse.data,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    // exception
+                }
+
+                Log.e(TAG, body + "\n");
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                String hello = "";
+                for (Map.Entry<String, String> entry : parameters.entrySet()) {
+                    hello += entry.getKey() + "=" + entry.getValue() + "&";
+                }
+                Log.d(TAG, "original parameter: " +  hello);
+                Map<String, String> params = parameters;
+                return params;
+            }
+
+            /*@Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }*/
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                String[] creds = new AccountManager(getApplicationContext()).retrieveCredentials();
+                String credentials = creds[0] + ":" + creds[1];
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                headers.put("Content-Type","application/x-www-form-urlencoded");
+                return headers;
+            }
+
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10*1000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        RequestQueueSingleton.getInstance(getApplicationContext())
+                .getRequestQueue().add(stringRequest);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
